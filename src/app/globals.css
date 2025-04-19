@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* الخطوط */
+    --body-font: 'Roboto', sans-serif;
+    --heading-font: 'Inter', sans-serif;
+    
+    /* الألوان */
+
+    --bg-light: #f9f9f9;
+    --color-red: #EF1D26;
+    --color-bg-light: #F9F9F9;
+    --color-text-color: #757F95;
+    --color-white: #ffffff;
+    --color-dark: #111111;
+    --color-green: #11B76B;
+    --color-blue: #0049D0;
+    --color-yellow: #FBA707;
+
+    --large2: 28px;
+    --large1: 26px;
+    --medium2: 24px;
+    --medium1: 20px;
+    --small: 16px;
+    
+    /* تأثيرات */
+    --shadow-type1: 0 0 40px 5px rgb(0 0 0 / 5%);
+    --shadow-type2: 0 0 15px rgba(0, 0, 0, 0.17);
+    --transition: all 0.5s ease-in-out;
+    --transition2: all 0.3s ease-in-out;
+    
+    /* الحدود */
+    --border-info-color: rgba(0, 0, 0, 0.08);
+    --border-info-color2: rgba(0, 0, 0, 0.05);
+    --border-white-color: rgba(255, 255, 255, 0.08);
+    --border-white-color2: rgba(255, 255, 255, 0.05);
+    
+    /* التذييل */
+    --footer-bg: #111111;
+    --footer-bg2: #181818;
+    --footer-text-color: #F5FAFF;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-cc-red: #EF1D26;
+  --color-cc-bg-red: #fef3f4;
+  --color-cc-bg-light: #F9F9F9;
+  --color-cc-text-color: #757F95;
+  --color-cc-white: #ffffff;
+  --color-cc-dark: #111111;
+  --color-cc-green: #11B76B;
+  --color-cc-blue: #0049D0;
+  --color-cc-yellow: #FBA707;
+  
+  --text-large2: 28px;
+  --text-large1: 26px;
+  --text-medium2: 24px;
+  --text-medium1: 20px;
+  --text-small: 16px;
+
+  --shadow-type1: 0 0 40px 5px rgb(0 0 0 / 5%);
+  --shadow-type2: 0 0 15px rgba(0, 0, 0, 0.17);
+
+  --breakpoint-c1: 300px;
+  --breakpoint-c2: 400px;
+  --breakpoint-c3: 500px;
+  --breakpoint-c4: 600px;
+  --breakpoint-c5: 700px;
+  --breakpoint-c6: 800px;
+  --breakpoint-c7: 900px;
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--body-font);
+  background-color: var(--color-cc-bg-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  /* width: 100%; */
 }
