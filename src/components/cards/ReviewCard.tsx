@@ -1,27 +1,25 @@
-import Image from "next/image";
+
 import { IoStarSharp, BiSolidQuoteSingleRight } from "@/lib/utils";
 
 interface ReviewProps {
-  img: string;
   name: string;
   text: string;
   stars: number;
 }
 
-const ReviewCard = ({ img, name, text, stars }: ReviewProps) => {
+const ReviewCard = ({ name, text, stars }: ReviewProps) => {
   const clientStars = [...Array(5)];
   
   return (
     // 
-    <div className="w-full  sm:min-w-[320px] min-w-[280px] bg-white p-6 rounded-3xl relative shadow-lg hover:shadow-xl transition-shadow duration-300 mx-2 flex flex-col h-full">
+    <div className="w-full  sm:min-w-[320px] min-w-[280px] bg-white p-6 rounded-3xl relative shadow-type2 mx-2 flex flex-col h-full">
       {/* Quotes decoration */}
-      <div className="absolute flex items-center top-6 right-6 text-6xl text-gray-100 z-0">
-        <BiSolidQuoteSingleRight />
-        <BiSolidQuoteSingleRight />
+      <div className="absolute flex items-center top-0 right-0 text-9xl text-gray-100 z-0">
+        <BiSolidQuoteSingleRight className="" />
       </div>
       
       {/* Client image */}
-      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full border-4 border-red-600 border-t-transparent border-r-transparent overflow-hidden">
+      {/* <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full border-4 border-red-600 border-t-transparent border-r-transparent overflow-hidden">
         <Image
           width={96}
           height={96}
@@ -29,10 +27,10 @@ const ReviewCard = ({ img, name, text, stars }: ReviewProps) => {
           src={img} 
           alt={`${name}'s profile`}
         />
-      </div>
+      </div> */}
       
       {/* Content */}
-      <div className="mt-16 text-center flex flex-col flex-grow">
+      <div className="text-center flex flex-col flex-grow z-1">
         <h2 className="text-xl font-bold text-gray-800 mb-1">
           {name}
         </h2>

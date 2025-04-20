@@ -31,7 +31,7 @@ const ReviewsSection = () => {
     }, [currentIndex, interval, nextIndex]);
 
     return (
-        <section className="py-16 w-full">
+        <section className="py-16 w-full bg-white">
             <div className="container mx-auto px-4">
                 <SectionHeader 
                     subtitle="Customer Reviews"
@@ -39,7 +39,7 @@ const ReviewsSection = () => {
                     span={"Say's"}
                 />
             
-                <div className="flex gap-2 mt-20 py-2 overflow-hidden">
+                <div className="flex gap-2 py-2 overflow-hidden">
                     {reviews.map((review) => (
                     <div
                         className="transition-transform duration-500 ease-in-out"
