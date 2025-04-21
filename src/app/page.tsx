@@ -15,19 +15,20 @@ export default async function Home() {
 
   const token = (await cookies()).get('token')?.value;
   if (token) {
+    console.log(token)
     const user = await fetchUser(token) as ProfileInfoApiResponse;
-    
+    console.log(user)
   }
  
 
   return (
     <main className="w-full min-h-[200vh]">
-      <Hero slides={slides} interval={3000} />
+      {/* <Hero slides={slides} interval={3000} />
       <LatestCars />
       <AboutSection />
       <RegistrationPrompt />
       <AdsSection />
-      <ReviewsSection />
+      <ReviewsSection /> */}
     </main>
   );
 }

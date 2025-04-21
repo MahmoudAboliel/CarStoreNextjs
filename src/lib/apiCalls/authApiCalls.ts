@@ -96,11 +96,13 @@ export const fetchUser = async (token: string) => {
         Authorization: `Bearer ${token}`,
         
       },
-      credentials: 'include'
     });
   
     if (!response.ok) {
-      console.log(response.text)
+      console.log(response.status)
+      console.log(response.statusText)
+      console.log(response.body)
+      console.log(response.headers)
       throw new Error("Faild to Fetch Profile Info");
     }
 
