@@ -39,10 +39,6 @@ export const RegisterUserSchema = z.object({
     number: z
     .string({required_error: "Mobile Number is required"})
     .regex(/^[0-9]{10}$/, "numbers 0 -> 9"),    
-    country: z
-    .string({
-        required_error: "Country is required"
-    }),
 
     city: z
     .string({

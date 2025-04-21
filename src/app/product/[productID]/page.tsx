@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { reviews, IoMdTime } from "@/lib/utils";
-// import { getSingleProduct } from "@/lib/apiCalls/prductsApiCalls";
-// import { SingleProductApiResponse } from "@/lib/Dto";
+import { getSingleProduct } from "@/lib/apiCalls/prductsApiCalls";
+import { SingleProductApiResponse } from "@/lib/Dto";
 import SingleCarImages from "@/components/cards/SingleCarImages";
 import CarAttributes from "@/components/cards/CarAttributes";
 import ReviewCard2 from "@/components/cards/ReviewCard2";
@@ -15,8 +15,9 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
 
   const productId = parseInt((await params).productId);
   console.log(productId)
-  // const getProduct = await getSingleProduct(productId) as SingleProductApiResponse;
-  // const data = getProduct.data;
+  const getProduct = await getSingleProduct(productId) as SingleProductApiResponse;
+  const data = getProduct.data;
+  console.log(data)
 
   // const carImages = [
   //   { id: 0, src: data.car.img1 },

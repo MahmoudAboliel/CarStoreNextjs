@@ -22,6 +22,31 @@ export type Car = {
     updateDate: string | null;
 }
 
+export type RegisterApiResponse = {
+    data: string;
+    errorMessage: string | null;
+    status: number;
+}
+
+export type LoginApiResponse = {
+    data: string;
+    errorMessage: string | null;
+    status: number;
+}
+
+export type ProfileInfoApiResponse = {
+    data: {
+        id: string;
+        city: string;
+        userName: string;
+        email: string;
+        phoneNumber: string;
+        profileImage: string;
+    },
+    errorMessage: string | null;
+    status: number
+}
+
 export type ProductsApiResponse = {
     data: Car[];
     errorMessage: string | null;
@@ -47,16 +72,4 @@ export type SingleProductApiResponse = {
     },
     errorMessage: string | null;
     status: number;
-}
-
-export type ProfileInfoApiResponse = {
-    data: {
-        city: string;
-        userName: string;
-        email: string;
-        phoneNumber: string;
-        profileImage: string;
-    },
-    errorMessage: string | null;
-    status: number
 }

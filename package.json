@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -H 192.168.1.110",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,6 +15,7 @@
     "axios": "^1.8.4",
     "date-fn": "^0.0.2",
     "gsap": "^3.12.7",
+    "js-cookie": "^3.0.5",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

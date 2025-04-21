@@ -44,7 +44,7 @@ const ProductsPage = async ({ searchParams }: ProductPageProps) => {
                         isNew={car.isNew}
                         attributes={car.attributes}
                         detailsLink={car.detailsLink}
-                        imageUrl={car.imageUrl}
+                        imageUrl={'/images/logo.png'}
                     />
                 ))}
             </div>

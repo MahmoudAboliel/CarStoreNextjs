@@ -4,13 +4,11 @@ import InputField from "@/components/froms/InputField";
 import Button from "@/components/Button";
 import { IoSend } from "@/lib/utils";
 import { RegisterUserSchema } from "@/lib/validation";
-import { toast } from "react-toastify";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { registerFunc } from "@/lib/apiCalls/authApiCalls";
 
 
 type FormData = {
@@ -19,14 +17,11 @@ type FormData = {
   password: string;
   confirmPassword: string;
   number: string;
-  country: string;
   city: string;
   avatar?: FileList | null;
 };
 
 const RegisterForm = () => {
-
-  const router = useRouter();
 
   const { 
     register, 
@@ -41,70 +36,34 @@ const RegisterForm = () => {
 
 
   const onSubmit = async (data: Omit<FormData, "confirmPassword">) => {
-    try {
-
-
       console.log('sss');
       const formData = new FormData();
-      const userData = {
-        name: data.userName,
-        email: data.email,
-        password: data.password,
-        city: data.city,
-        country: data.country,
-        number: data.number,
-      }
-      formData.append('userData', JSON.stringify(userData));
+      
+      formData.append("Name", data.userName);
+      formData.append("Email", data.email);
+      formData.append("Password", data.password);
+      formData.append("City", data.city);
+      formData.append("Number", data.number);
       if (data.avatar?.[0])
-        formData.append('avatar', data.avatar[0])
+        formData.append('File1', data.avatar[0])
       
-      const response = await axios.post(
-        "/Account/Register",
-        
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
-      );
+      registerFunc(formData, reset)
 
-      console.log(response)
-      document.cookie = `token=${response.data.data}; max-age=${60 * 60 * 24 * 7}; path=/`;
+  }
 
-      localStorage.setItem('token', response.data.data);
-      
-      toast.success("Account created successfully!");
-      reset();
-      router.replace("/");
+  const [preview, setPreview] = useState<string | null>(null);
 
-    } catch (error) {
-
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Registration Failed!!");
-        console.log(error)
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-
+  useEffect(() => {
+    const file = watch("avatar")?.[0];
+    if (file) {
+      const reader = URL.createObjectURL(file);
+      setPreview(reader);
+      return () => URL.revokeObjectURL(reader);
+    } else {
+      setPreview(null);
     }
-  }
-
-  // داخل مكون RegisterForm
-const [preview, setPreview] = useState<string | null>(null);
-
-// إضافة هذا التأثير لمعاينة الصورة
-useEffect(() => {
-  const file = watch("avatar")?.[0];
-  if (file) {
-    const reader = URL.createObjectURL(file);
-    setPreview(reader);
-    return () => URL.revokeObjectURL(reader);
-  } else {
-    setPreview(null);
-  }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [watch("avatar")]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("avatar")]);
 
   return (
     <form 
@@ -122,10 +81,10 @@ useEffect(() => {
                 alt="Preview"
                 width={80}
                 height={80}
-                className="rounded-full object-fit w-20 h-20"
+                className="rounded-lg object-fit w-20 h-20"
               />
             ) : (
-              <div className="rounded-full bg-gray-200 w-20 h-20 flex items-center justify-center">
+              <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
                 <span className="text-gray-500">No image</span>
               </div>
             )}
@@ -186,13 +145,6 @@ useEffect(() => {
             type="text"
             register={register}
             error={errors.number}
-        />
-        <InputField 
-            label="Country"
-            id="country"
-            type="text"
-            register={register}
-            error={errors.city}
         />
         <InputField 
             label="City"

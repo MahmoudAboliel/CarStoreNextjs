@@ -21,8 +21,11 @@ export async function getProductsCount() {
     `${DOMAIN}/Car/Count`, 
     { cache: 'no-store' });
 
-  if (!response.ok)
+  if (!response.ok) {
+
+    console.log(response.headers.entries)
     throw new Error("Faild to Featch Products Count");
+  }
 
   return response.json();
 }
@@ -45,3 +48,4 @@ export async function getSingleProduct(productId: number) {
   return response.json();
   
 }
+
