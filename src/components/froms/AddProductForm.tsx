@@ -7,12 +7,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddProductSchema } from "@/lib/validation";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import InputImageField from "./InputImageField";
 
 interface AddProductFormProps {
     classes: string;
 }
 
 type FormData = {
+    img1?: FileList;
+    img2?: FileList;
+    img3?: FileList;
     status: string;
     brand: string;
     model: string;
@@ -31,6 +37,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
         handleSubmit, 
         formState: { errors, isSubmitting },
         // reset 
+        watch
       } = useForm<FormData>({
         resolver: zodResolver(AddProductSchema)
       });
@@ -40,11 +47,173 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
 
         await axios.post("");
     }
+
+    const [preview1, setPreview1] = useState<string | null>(null);
+    const [preview2, setPreview2] = useState<string | null>(null);
+    const [preview3, setPreview3] = useState<string | null>(null);
+    
+    useEffect(() => {
+      const file1 = watch("img1")?.[0];
+    
+      if (file1) {
+        const reader1 = URL.createObjectURL(file1);
+        setPreview1(reader1);
+        return () => URL.revokeObjectURL(reader1);
+      } else {
+        setPreview1(null);
+      }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watch("img1")]);
+    
+    useEffect(() => {
+      const file2 = watch("img2")?.[0];
+    
+      if (file2) {
+        const reader2 = URL.createObjectURL(file2);
+        setPreview2(reader2);
+        return () => URL.revokeObjectURL(reader2);
+      } else {
+        setPreview2(null);
+      }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watch("img2")]);
+    
+    useEffect(() => {
+      const file3 = watch("img3")?.[0];
+    
+      if (file3) {
+        const reader3 = URL.createObjectURL(file3);
+        setPreview3(reader3);
+        return () => URL.revokeObjectURL(reader3);
+      } else {
+        setPreview3(null);
+      }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watch("img3")]);
+    
   return (
     <div className={`${classes} overflow-y-auto mx-auto`}>
         <form onSubmit={handleSubmit(onSubmit)}
             noValidate
             className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-end gap-2.5">
+            <div className="col-span-full">
+                        
+                <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 w-full">
+                    <InputImageField 
+                        label="Image Test"
+                        id="img1"
+                        preview={preview1}
+                        register={register}
+                        error={errors.img1}
+                    />
+                    <div>
+                        <label className="block text-gray-800 text-small mb-2">Image One</label>
+                        <div className="flex items-center gap-4">
+                            {preview1 ? (
+                            <Image
+                                src={preview1}
+                                alt="Preview"
+                                width={80}
+                                height={80}
+                                className="rounded-lg object-fit w-20 h-20"
+                            />
+                            ) : (
+                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
+                                <span className="text-gray-500">No image</span>
+                            </div>
+                            )}
+                            <label
+                            htmlFor="img1"
+                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
+                            >
+                            Choose Image
+                            </label>
+                            <input
+                            type="file"
+                            id="img1"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("img1")}
+                            />
+                        </div>
+                        {errors.img1 && (
+                            <p className="text-cc-red text-sm mt-1">{errors.img1.message}</p>
+                        )}
+                    </div>
+    
+                    <div>
+                        <label className="block text-gray-800 text-small mb-2">Image Two</label>
+                        <div className="flex items-center gap-4">
+                            {preview2 ? (
+                            <Image
+                                src={preview2}
+                                alt="Preview"
+                                width={80}
+                                height={80}
+                                className="rounded-lg object-fit w-20 h-20"
+                            />
+                            ) : (
+                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
+                                <span className="text-gray-500">No image</span>
+                            </div>
+                            )}
+                            <label
+                            htmlFor="img2"
+                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
+                            >
+                            Choose Image
+                            </label>
+                            <input
+                            type="file"
+                            id="img2"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("img2")}
+                            />
+                        </div>
+                        {errors.img2 && (
+                            <p className="text-cc-red text-sm mt-1">{errors.img2.message}</p>
+                        )}
+                    </div>
+    
+                    <div>
+                        <label className="block text-gray-800 text-small mb-2">Image Three</label>
+                        <div className="flex items-center gap-4">
+                            {preview3 ? (
+                            <Image
+                                src={preview3}
+                                alt="Preview"
+                                width={80}
+                                height={80}
+                                className="rounded-lg object-fit w-20 h-20"
+                            />
+                            ) : (
+                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
+                                <span className="text-gray-500">No image</span>
+                            </div>
+                            )}
+                            <label
+                            htmlFor="img3"
+                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
+                            >
+                            Choose Image
+                            </label>
+                            <input
+                            type="file"
+                            id="img3"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("img3")}
+                            />
+                        </div>
+                        {errors.img3 && (
+                            <p className="text-cc-red text-sm mt-1">{errors.img3.message}</p>)}
+                    </div>
+                </div>
+            </div>
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"

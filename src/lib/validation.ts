@@ -158,7 +158,26 @@ export const AddProductSchema = z.object({
     price: z
     .string({
         required_error: "Price is required"
-    })
+    }),
+
+    img1: z
+    .any()
+    .refine((files) => files?.length === 1, "Image one is required")
+    .refine((files) => files?.[0]?.size <= 5_000_000, "5MB is maximum size")
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), "image/jpeg, image/jpg, image/png, image/webp"),
+    
+    img2: z
+    .any()
+    .refine((files) => files?.length === 1, "Image two is required")
+    .refine((files) => files?.[0]?.size <= 5_000_000, "5MB is maximum size")
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), "image/jpeg, image/jpg, image/png, image/webp"),
+    
+    img3: z
+    .any()
+    .refine((files) => files?.length === 1, "Image three is required")
+    .refine((files) => files?.[0]?.size <= 5_000_000, "5MB is maximum size")
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), "image/jpeg, image/jpg, image/png, image/webp"),
+
 
 });
 

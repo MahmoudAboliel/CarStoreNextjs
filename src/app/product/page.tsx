@@ -1,11 +1,11 @@
 import CarCard from "@/components/cards/CarCard";
 import Pagination from "@/components/Pagination";
 import SectionHeader from "@/components/sections/SectionHeader";
-// import { getProducts, getProductsCount } from "@/lib/apiCalls/prductsApiCalls";
-// import { CountApiResponse, ProductsApiResponse } from "@/lib/Dto";
-// import { transformData } from "@/lib/functions";
-// import { ARTICLE_PER_PAGE } from "@/lib/constance";
-// import { CarCardProps } from "@/lib/types";
+import { getProducts, getProductsCount } from "@/lib/apiCalls/prductsApiCalls";
+import { CountApiResponse, ProductsApiResponse } from "@/lib/Dto";
+import { transformData } from "@/lib/functions";
+import { ARTICLE_PER_PAGE } from "@/lib/constance";
+import { CarCardProps } from "@/lib/types";
 import { carsData } from "@/lib/utils";
 
 interface ProductPageProps {
@@ -17,13 +17,14 @@ const ProductsPage = async ({ searchParams }: ProductPageProps) => {
     const { pageNumber } = await searchParams;
 
     
-    // const products = await getProducts(pageNumber) as ProductsApiResponse;
-    // const count = await getProductsCount() as CountApiResponse;
-    const pages:number = 4 // Math.ceil(count.data / ARTICLE_PER_PAGE);
+    const products = await getProducts(pageNumber) as ProductsApiResponse;
+    const count = await getProductsCount() as CountApiResponse;
+    const pages:number = Math.ceil(count.data / ARTICLE_PER_PAGE);
+    console.log(products, count)
     // const data: CarCardProps[] = products.data
-        // .map(product => {
-        //     return transformData(product)
-        // });
+    //     .map(product => {
+    //         return transformData(product)
+    //     });
     
   return (
     <section className=" w-full p-6">
@@ -38,6 +39,7 @@ const ProductsPage = async ({ searchParams }: ProductPageProps) => {
                 {carsData.map((car) => (
                     <CarCard 
                         id={parseInt(car.id)}
+                        // id={car.id}
                         key={car.id} 
                         brand={car.brand}
                         price={car.price}

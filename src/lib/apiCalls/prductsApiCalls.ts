@@ -41,8 +41,9 @@ export async function getSingleProduct(productId: number) {
     });
 
   if (!response.ok) {
+    console.log(response.status)
     console.log(response.statusText)
-    throw new Error("Faild to Fetch Products");
+    throw new Error("Faild to Fetch Product");
   }
 
   return response.json();

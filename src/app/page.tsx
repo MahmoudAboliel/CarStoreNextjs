@@ -17,7 +17,7 @@ export default async function Home() {
   if (token) {
     console.log(token)
     const user = await fetchUser(token) as ProfileInfoApiResponse;
-    console.log(user)
+    console.log(user.data)
   }
  
 

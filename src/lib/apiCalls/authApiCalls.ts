@@ -103,6 +103,7 @@ export const fetchUser = async (token: string) => {
       console.log(response.statusText)
       console.log(response.body)
       console.log(response.headers)
+      console.log(response.bodyUsed)
       throw new Error("Faild to Fetch Profile Info");
     }
 

@@ -81,6 +81,10 @@ const AddReviewForm = ({ userId }: AddReviewForm) => {
             register={register}
             error={errors.content}
         />
+        <div className="space-x-4">
+            <input type="checkbox" id="isPublic" defaultChecked />
+            <label htmlFor="isPublic">Is Public</label>
+        </div>
         <Button 
             text="Add"
             type="submit"
