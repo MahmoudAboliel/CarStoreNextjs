@@ -59,17 +59,56 @@ export type CountApiResponse = {
     status: number;
 }
 
+export type Reviews = {
+    id: number;
+    name: string;
+    number: string;
+    contentMsg:string;
+    isPublic: string;
+    stars: number;
+    createdDate: string;
+    carId: number;
+    updatedDate: string | null;
+}
+
 export type SingleProductApiResponse = {
     data: {
         car: Car;
         user: {
-            id: string;
-            name: string;
-            picture: string;
-            phone: string;
-        };
-        Reviews: []
-    },
+          id: string;
+          name: string;
+          picture: string;
+          phone: string;
+        },
+        reviews: Reviews[]
+    };
     errorMessage: string | null;
     status: number;
+}
+
+export type SettingsApiResponse = {
+    data: {
+        siteName: string;
+        favicon: string;
+        logo: string;
+        facebook: string;
+        instagram: string;
+        whatsapp: string;
+        homeImg1: string;
+        homeImg2: string;
+        homeImg3: string;
+        homeTxt1: string;
+        homeTxt2: string;
+        homeTxt3: string;
+        description: string;
+    };
+    errorMessage: string | null;
+    status: number;
+}
+
+export type AddCommentApiResponse = {
+    data: string;
+    errorMessage: string;
+    status: number;
+    isAdmin: boolean;
 }

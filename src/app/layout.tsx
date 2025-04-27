@@ -4,6 +4,7 @@ import { roboto, inter } from "@/lib/fonts";
 import { ToastContainer } from "react-toastify";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
+import { fetchSettings } from "@/lib/apiCalls/PublicApiCalls";
 
 export const metadata: Metadata = {
   title: "Car Store",
@@ -16,7 +17,8 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: Readonly<RootLayoutProps>) {
 
-  
+  // fetchSettings();
+
   return (
     <html lang="en">
       <body
@@ -34,6 +36,7 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
             pauseOnHover
             theme="colored"
             />
+
           <main className="overflow-hidden">
             <Header />
             <div className="mt-[67px]">

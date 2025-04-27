@@ -10,14 +10,16 @@ import RegistrationPrompt from "@/components/sections/RegistrationPrompt";
 import { cookies } from "next/headers";
 import { fetchUser } from "@/lib/apiCalls/authApiCalls";
 import { ProfileInfoApiResponse } from "@/lib/Dto";
+import { useUserStore } from "@/stores/useUserStore";
 
 export default async function Home() {
 
   const token = (await cookies()).get('token')?.value;
   if (token) {
-    console.log(token)
-    const user = await fetchUser(token) as ProfileInfoApiResponse;
-    console.log(user.data)
+    // console.log(token)
+    // const user = await fetchUser(token) as ProfileInfoApiResponse;
+    // console.log(user)
+    // useUserStore.getState().setUser(user.data)
   }
  
 

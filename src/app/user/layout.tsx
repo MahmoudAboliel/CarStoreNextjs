@@ -3,6 +3,8 @@ import Sidebar from "@/components/sections/Sidebar";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { useUserStore } from "@/stores/useUserStore";
+import { DOMAIN } from "@/lib/constance";
 
 export const metadata: Metadata = {
   title: "User Profile",
@@ -20,16 +22,21 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
     
     if (!token)
         redirect('/')
-    
+
+    const user = useUserStore.getState().user;
+
+    const imgRes = await fetch(`http://192.168.1.102:5059/Uploads/ProfileImg/${user?.profileImage}`)
+    const img = imgRes.json() 
+    console.log(user)
     return (
         <main className="overflow-hidden min-h-screen p-7">
             <section className="container mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 items-stretch">
                     <Sidebar 
                         classes="lg:col-span-2" 
-                        name={'Mahmoud'}
-                        email={'mahmoud@gmail.com'}
-                        img={'/images/logo.png'}
+                        name={user?.userName || ''}
+                        email={user?.email || ''}
+                        img={''}
                     />
                     <div className="lg:col-span-4 shadow-type1 bg-white rounded-3xl p-5 md:p-7">
                         {children}

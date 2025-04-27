@@ -2,36 +2,40 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+
+
 type Settings = {
     siteName: string;
     favicon: string;
     logo: string;
-    facebookUrl: string;
-    instagramUrl: string;
-    whatsappNumber: string;
-    homeImage1: string;
-    homeImage2: string;
-    homeImage3: string;
-    homeText1: string;
-    homeText2: string;
-    homeText3: string;
+    facebook: string;
+    instagram: string;
+    whatsapp: string;
+    homeImg1: string;
+    homeImg2: string;
+    homeImg3: string;
+    homeTxt1: string;
+    homeTxt2: string;
+    homeTxt3: string;
     description: string;
 } | null;
 
 type State = {
     settings: Settings;
     setSettings: (s: Settings) => void;
+    loading: boolean;
 }
 
 export const useSettingsStore = create<State>()(
     persist(
         (set) => ({
             settings: null,
-            setSettings: (s) => set({ settings: s })
+            setSettings: (s) => set({ settings: s }),
+            loading: false,
         }),
         {
             name: 'settings-storage',
-            storage: createJSONStorage(() => localStorage)
+            storage: typeof window !== 'undefined' ? createJSONStorage(() => localStorage) : undefined
         }
     )
 );

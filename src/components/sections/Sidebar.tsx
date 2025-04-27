@@ -17,25 +17,25 @@ const Sidebar = ({ classes, name, email, img }: ProfileSidebarProps) => {
     const profileLinks = [
         {
           id: 1,
-          label: 'Dashboard', 
+          label: 'لوحة التحكم', 
           link: '/user/dashboard',
           icon: RiDashboard3Line,
         },
         {
           id: 2,
-          label: 'My Profile', 
+          label: 'الملف الشخصي', 
           link: '/user',
           icon: CgProfile
         },
         {
           id: 4,
-          label: 'Add Product', 
+          label: 'إضافة منتج', 
           link: '/user/addProduct',
           icon: RiAddCircleLine
         },
         {
           id: 6,
-          label: 'Logout', 
+          label: 'تسجيل الخروج', 
           link: '/',
           icon: MdLogout
         },

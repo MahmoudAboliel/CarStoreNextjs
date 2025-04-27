@@ -20,7 +20,7 @@ export const registerFunc = async (formData:FormData, reset:()=>void) => {
         const response = await res.json() as RegisterApiResponse
 
         if (response.errorMessage) {
-          toast.error(response.errorMessage);
+          toast.error(response.errorMessage)
           console.log(response.errorMessage)
           return;
         }

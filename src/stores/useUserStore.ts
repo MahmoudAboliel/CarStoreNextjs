@@ -9,6 +9,7 @@ export type User = {
     city: string;
     phoneNumber: string;
     profileImage: string;
+    
 } | null;
 
 type State = {
@@ -17,14 +18,11 @@ type State = {
 }
 
 export const useUserStore = create<State>()(
-    persist(
+   
         (set) => ({
             user: null,
             setUser: (user) => set({ user })
         }),
-        {
-            name: 'user-storage',
-            storage: createJSONStorage(() => localStorage)
-        }
-    )
+       
+    
 );

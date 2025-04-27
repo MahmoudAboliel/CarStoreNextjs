@@ -105,27 +105,27 @@ export const headerData = {
     description: 'We are many variations of passages available but the majority have suffered alteration in some form by injected humour words believable.',
     links: [
         {
-            label: 'Home',
+            label: 'الرئيسية',
             href: '/',
         },
         {
-            label: 'Products',
+            label: 'المنتجات',
             href: '/product?pageNumber=1',
         },
         {
-            label: 'Profile',
+            label: 'الملف الشخصي',
             href: '/user',
         },
         {
-            label: 'Admin',
+            label: 'المسؤول',
             href: '/admin',
         },
         {
-            label: 'Login',
+            label: 'تسجيل الدخول',
             href: '/login',
         },
         {
-            label: 'Register',
+            label: 'إنشاء حساب',
             href: '/register',
         },
     ]

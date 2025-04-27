@@ -30,15 +30,11 @@ export async function getProductsCount() {
   return response.json();
 }
 
-export async function getSingleProduct(productId: number) {
+export async function getSingleProduct(productId: string) {
   
-  const response = await fetch(
-    `${DOMAIN}/Car/ShowCar/${productId}`, 
-    {
-      cache: 'no-store',
-      // update data every 50 second
-      // next: {revalidate: 50}
-    });
+  const response = await fetch(`${DOMAIN}/Car/ShowCar/${productId}`, {
+    cache: 'no-store'
+  })
 
   if (!response.ok) {
     console.log(response.status)

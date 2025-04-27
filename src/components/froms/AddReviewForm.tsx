@@ -6,11 +6,8 @@ import { IoSend, IoStarSharp } from "@/lib/utils";
 import { AddReviewSchema } from "@/lib/validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { toast } from "react-toastify";
-// import axios from "axios";
-// import { useRouter } from "next/navigation";
-// import { loginFunc } from "@/lib/apiCalls/authApiCalls";
 import { useState } from "react";
+import { addComment } from "@/lib/apiCalls/PublicApiCalls";
 
 type FormData = {
     userName: string;
@@ -18,10 +15,10 @@ type FormData = {
     phoneNumber: string;
 }
 interface AddReviewForm {
-    userId: string;
+    carId: number;
 }
 
-const AddReviewForm = ({ userId }: AddReviewForm) => {
+const AddReviewForm = ({ carId }: AddReviewForm) => {
 
     // const router = useRouter();
     const [stars, setStars] = useState(1);
@@ -37,7 +34,15 @@ const AddReviewForm = ({ userId }: AddReviewForm) => {
 
     
     const onSubmit = async (data: FormData) => {
-        console.log(data, userId)
+
+        const commentData = {
+            Name: data.userName,
+            Number: data.phoneNumber,
+            ContentMsg: data.content,
+            Stars: stars
+        } 
+       
+        addComment(commentData, carId)
         
     }   
 
@@ -81,10 +86,6 @@ const AddReviewForm = ({ userId }: AddReviewForm) => {
             register={register}
             error={errors.content}
         />
-        <div className="space-x-4">
-            <input type="checkbox" id="isPublic" defaultChecked />
-            <label htmlFor="isPublic">Is Public</label>
-        </div>
         <Button 
             text="Add"
             type="submit"
