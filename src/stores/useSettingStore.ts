@@ -1,41 +1,27 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-
-
-
-type Settings = {
-    siteName: string;
-    favicon: string;
-    logo: string;
-    facebook: string;
-    instagram: string;
-    whatsapp: string;
-    homeImg1: string;
-    homeImg2: string;
-    homeImg3: string;
-    homeTxt1: string;
-    homeTxt2: string;
-    homeTxt3: string;
-    description: string;
-} | null;
+import { SettingsApiResponse } from "@/lib/Dto"
 
 type State = {
-    settings: Settings;
-    setSettings: (s: Settings) => void;
+    settings: SettingsApiResponse['data'] | null;
+    setSettings: (s: SettingsApiResponse['data']) => void;
     loading: boolean;
+    setLoading: (st: boolean) => void;
 }
 
 export const useSettingsStore = create<State>()(
     persist(
         (set) => ({
             settings: null,
-            setSettings: (s) => set({ settings: s }),
+            setSettings: (s) => set({ settings: s, loading: false }),
             loading: false,
+            setLoading: (st) => set({ loading: st })
         }),
         {
             name: 'settings-storage',
-            storage: typeof window !== 'undefined' ? createJSONStorage(() => localStorage) : undefined
+            storage: typeof window !== 'undefined' ? createJSONStorage(() => localStorage) : undefined,
+            skipHydration: true,
         }
     )
 );

@@ -10,11 +10,12 @@ const CarCard = ({
   isNew = false,
   attributes,
   detailsLink,
-  imageUrl
-}: CarCardProps) => {
-
+  imageUrl,
+  isLine
+}: CarCardProps & {isLine?: boolean}) => {
+  // 
   return (
-    <div className="flex flex-col p-4 gap-3 bg-white mx-auto rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 group w-full max-w-md md:max-w-2xl">
+    <div className={`${isLine && 'w-full sm:min-w-[320px] min-w-[280px]'} flex flex-col p-4 gap-3 bg-white mx-auto rounded-2xl shadow-type2 transition-shadow duration-300 group w-full max-w-md md:max-w-2xl`}>
       {/* Image Container */}
       <div className="w-full h-48 md:h-56 lg:h-64 overflow-hidden relative rounded-xl">
         <Image

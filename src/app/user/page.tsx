@@ -7,9 +7,9 @@ const ProfilePage = () => {
   return (
     <section>
       <SectionHeader 
-        subtitle="Welcome"
-        title="Edit Your"
-        span="Profile"
+        subtitle="المستخدم"
+        title="لوحة التحكم"
+        span="الملف الشخصي"
       />
       <EditProfileForm 
         classes=""

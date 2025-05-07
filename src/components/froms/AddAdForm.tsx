@@ -3,25 +3,26 @@
 import InputField from "@/components/froms/InputField";
 import Button from "@/components/Button";
 import { IoSend } from "@/lib/utils";
-// import { RegisterUserSchema } from "@/lib/validation";
-// import { toast } from "react-toastify";
-// import axios from "axios";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import InputImageField from "./InputImageField";
+import { AddAdSchema } from "@/lib/validation";
+import { addAd } from "@/lib/apiCalls/adminAPIsCall";
 
 
 type FormData = {
   title: string;
-  startDate: Date;
-  endDate: Date;
-  img: FileList | null;  
+  description: string;
+  startDate: string;
+  endDate: string;
+  img?: FileList;  
   url: string;
 };
 
-const AddAdForm = () => {
+interface Props {
+  token: string;
+}
+const AddAdForm = ({ token }: Props) => {
 
 //   const router = useRouter();
 
@@ -31,29 +32,25 @@ const AddAdForm = () => {
     formState: { errors, isSubmitting },
     watch,
     // setValue,
-    // reset 
-  } = useForm<FormData>();
+    reset 
+  } = useForm<FormData>({
+    resolver: zodResolver(AddAdSchema)
+  });
 
 
   const onSubmit = async (data: Omit<FormData, "confirmPassword">) => {
-    console.log(data)
-  }
+    const formData = new FormData()
+    formData.append("name", data.title)
+    formData.append("Description", data.description)
+    formData.append("Url", data.url)
+    if (data.img?.[0])
+    formData.append("File1", data.img[0])
+  formData.append("StartDate", data.startDate.toString())
+    formData.append("EndDate", data.endDate.toString())
 
-  // داخل مكون RegisterForm
-const [preview, setPreview] = useState<string | null>(null);
-
-// إضافة هذا التأثير لمعاينة الصورة
-useEffect(() => {
-  const file = watch("img")?.[0];
-  if (file) {
-    const reader = URL.createObjectURL(file);
-    setPreview(reader);
-    return () => URL.revokeObjectURL(reader);
-  } else {
-    setPreview(null);
+    await addAd(formData, token)
+    reset()
   }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [watch("img")]);
 
   return (
     <form 
@@ -63,64 +60,48 @@ useEffect(() => {
 
         {/*  */}
         <div className="col-span-full">
-          <label className="block text-gray-800 text-small mb-2">Image Ad</label>
-          <div className="flex items-center gap-4">
-            {preview ? (
-              <Image
-                src={preview}
-                alt="Preview"
-                width={80}
-                height={80}
-                className="rounded-lg object-fit w-20 h-20"
-              />
-            ) : (
-              <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
-                <span className="text-gray-500">No image</span>
-              </div>
-            )}
-            <label
-              htmlFor="avatar"
-              className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
-            >
-              Choose Image
-            </label>
-            <input
-              type="file"
-              id="avatar"
-              accept="image/*"
-              className="hidden"
-              {...register("img")}
-            />
-          </div>
-          {errors.img && (
-            <p className="text-cc-red text-sm mt-1">{errors.img.message}</p>
-          )}
+          <InputImageField 
+            label="صورة الإعلان"
+            id="img"
+            register={register}
+            error={errors.img}
+            watch={watch}
+          />
         </div>
         {/*  */}
 
         <InputField 
-            label="Title"
+            label="العنوان"
             id="title"
             type="text"
             register={register}
             error={errors.title}
         />
+        
         <InputField 
-            label="Start Date"
+            label="الوصف"
+            id="description"
+            type="text"
+            register={register}
+            error={errors.description}
+        />
+        
+        <InputField 
+            label="تاريخ البداية"
             id="startDate"
             type="date"
             register={register}
             error={errors.startDate}
         />
         <InputField 
-            label="End Date"
+            label="تاريخ الإنتهاء"
             id="endDate"
             type="date"
             register={register}
             error={errors.endDate}
         />
         <InputField 
-            label="URL"
+            label="الرابط"
             id="url"
             type="text"
             register={register}
@@ -128,7 +109,7 @@ useEffect(() => {
         />
         
         <Button 
-            text="Add"
+            text="إضافة"
             type="submit"
             Icon={IoSend}
             reverse

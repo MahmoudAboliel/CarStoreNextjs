@@ -1,10 +1,11 @@
 import { CarCardProps } from "@/lib/types";
 import { Car } from "@/lib/Dto";
+import { DOMAINImage } from "@/lib/constance";
 
 export function transformData(backendData: Car): CarCardProps  {
     return {
         id: backendData.id,
-        imageUrl: backendData.img1, 
+        imageUrl: `${DOMAINImage}/${backendData.img1}`, 
         brand: backendData.brand,
         price: backendData.price.toLocaleString(),
         isNew: backendData.status === 'New' ? true : false,

@@ -4,7 +4,7 @@
     /* الخطوط */
     --body-font: 'Roboto', sans-serif;
     --heading-font: 'Inter', sans-serif;
-    
+    --arabic-font: 'tajawal';
     /* الألوان */
 
     --bg-light: #f9f9f9;
@@ -79,12 +79,12 @@
 }
 
 body {
-  font-family: var(--body-font);
+  font-family: var(--arabic-font);
   background-color: var(--color-cc-bg-light);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--heading-font);
+  /* font-family: var(--heading-font); */
 }
 
 ul {

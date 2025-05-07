@@ -2,16 +2,18 @@
 
 import { GiSteeringWheel } from "react-icons/gi";
 import { BsFuelPumpFill } from "react-icons/bs";
-import { AiOutlineDollar } from "react-icons/ai";
+import { AiOutlineDollar, AiFillDollarCircle } from "react-icons/ai";
 import { PiEngineFill } from "react-icons/pi";
 import { FaRoad } from "react-icons/fa";
-import { BiSolidQuoteSingleRight } from "react-icons/bi";
+import { BiSolidQuoteSingleRight, BiCommentCheck } from "react-icons/bi";
 import { MdArrowRight, MdLogout, MdEdit } from "react-icons/md";
 import { RiDashboard3Line, RiStackLine, RiAddCircleLine } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-import { FaEye, FaEyeSlash, FaTrashAlt, FaCalendar } from "react-icons/fa";
-import { IoTimeOutline } from "react-icons/io5";
-import { IoMdTime } from "react-icons/io";
+import { FaEye, FaEyeSlash, FaTrashAlt, FaCalendar, FaUserCheck } from "react-icons/fa";
+import { IoMdTime, IoIosLink } from "react-icons/io";
+import { TbLockFilled } from "react-icons/tb";
+import { SiAdblock } from "react-icons/si";
+
 import { 
     IoStarSharp, 
     IoLocation, 
@@ -30,6 +32,7 @@ import {
     IoLogoInstagram,
     IoAdd,
     IoAddCircle,
+    IoTimeOutline,
     
 } from "react-icons/io5";
 
@@ -70,6 +73,12 @@ export {
     RiStackLine,
     RiAddCircleLine,
     MdLogout,
+    TbLockFilled,
+    SiAdblock,
+    FaUserCheck,
+    IoIosLink,
+    BiCommentCheck,
+    AiFillDollarCircle,
  };
 
 export const slides = [
@@ -78,7 +87,7 @@ export const slides = [
       src: '/images/slider-1.png',
       alt: 'Description for slide 1',
       subtitle: 'welcome to Motox',
-      title: 'We offer best way to find dream car',
+      title: 'نحن نقدم أفضل طريقة للعثور على سيارة الأحلام',
       description: 'There are many variations of passages orem psum available but the majority have suffered alteration in some form the great explorer of the truth by injected humour.'
     },
     {

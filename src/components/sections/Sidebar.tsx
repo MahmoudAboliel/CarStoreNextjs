@@ -1,28 +1,35 @@
 "use client";
 
-import { CgProfile, MdLogout, RiAddCircleLine, RiDashboard3Line } from "@/lib/utils";
+import { DOMAINImage } from "@/lib/constance";
+import { CgProfile, RiAddCircleLine, RiDashboard3Line } from "@/lib/utils";
+import { useUserStore } from "@/stores/useUserStore";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logout from "@/components/Logout";
 
 interface ProfileSidebarProps {
     classes?: string;
-    name: string;
-    email: string;
-    img: string;
-
 }
-const Sidebar = ({ classes, name, email, img }: ProfileSidebarProps) => {
+const Sidebar = ({ classes }: ProfileSidebarProps) => {
+
+  const profile = useUserStore(state => state.user)
 
     const profileLinks = [
         {
           id: 1,
           label: 'لوحة التحكم', 
-          link: '/user/dashboard',
+          link: '/user/dashboard?pageNumber=1',
           icon: RiDashboard3Line,
         },
         {
           id: 2,
+          label: 'المنتجات المباعة', 
+          link: '/user/soldProducts?pageNumber=1',
+          icon: RiDashboard3Line,
+        },
+        {
+          id: 3,
           label: 'الملف الشخصي', 
           link: '/user',
           icon: CgProfile
@@ -33,42 +40,42 @@ const Sidebar = ({ classes, name, email, img }: ProfileSidebarProps) => {
           link: '/user/addProduct',
           icon: RiAddCircleLine
         },
-        {
-          id: 6,
-          label: 'تسجيل الخروج', 
-          link: '/',
-          icon: MdLogout
-        },
       ];
 
     const pathName = usePathname();
+    // console.log(pathName)
   
     return (
     <nav className={`${classes} bg-cc-white rounded-3xl p-5 md:p-7 shadow-type1 space-y-5`}>
 
-        <div className="border-b border-gray-300 flex flex-col items-center justify-center pb-4 space-y-4">
+        <div className="border-b border-gray-300 flex flex-col items-center justify-end pb-4 space-y-4">
             <Image 
-                className="rounded-full w-20 h-20 "
-                width={100}
-                height={120}
+                className="rounded-md w-40 h-40 "
+                width={160}
+                height={160}
                 priority
-                src={img} 
+                src={`${DOMAINImage}/${profile?.profileImage}`} 
                 alt="profile Image" />
-            <div>
-                <h3 className="font-semibold text-base md:text-md">{name}</h3>
-                <p className="text-sm md:base text-gray-600">{email}</p>
+            <div className="text-right text-gray-800 text-lg space-y-1">
+                <h3 className="">{profile?.fullName}</h3>
+                <p className="">{profile?.email}</p>
+                <p className="">{profile?.city}</p>
+                <p className="">{profile?.phoneNumber}</p>
             </div>
         </div>
-        <div>
+        <div className="space-y-3">
             {profileLinks.map(link => (
             <Link 
-                className={`flex items-center gap-3 text-base ${pathName === link.link && 'text-cc-white bg-cc-red rounded-md pl-5'} px-3 py-2 hover:pl-5 transition-all duration-150`}
+                className={`flex items-center gap-3 text-base ${pathName === link.link.split('?')[0] && 'text-cc-white bg-cc-red rounded-md pl-5'} px-3 py-2 hover:pl-5 transition-all duration-150`}
                 key={link.id} 
                 href={link.link}>
-                <link.icon className={`${pathName !== link.link && 'text-cc-red'} text-xl`}  />
+                <link.icon className={`${pathName !== link.link.split('?')[0] && 'text-cc-red'} text-xl`}  />
                 {link.label}
             </Link>
             ))}
+           
+            <Logout /> 
+           
         </div>
     </nav>
   );

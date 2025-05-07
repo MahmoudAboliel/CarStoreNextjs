@@ -8,7 +8,7 @@ interface ReviewProps {
 }
 
 const ReviewCard = ({ name, text, stars }: ReviewProps) => {
-  const clientStars = [...Array(5)];
+const clientStars = [...Array(5)]
   
   return (
     // 

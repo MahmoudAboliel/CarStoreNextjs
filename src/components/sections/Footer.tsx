@@ -2,32 +2,40 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { headerData, IoLogoFacebook, IoLogoWhatsapp, IoLogoInstagram, MdArrowRight, IoSend } from "@/lib/utils";
+import { IoLogoFacebook, IoLogoWhatsapp, IoLogoInstagram, MdArrowRight, IoSend } from "@/lib/utils";
+import { DOMAINImage, mainLinks } from "@/lib/constance";
 import Button from "../Button";
 import { usePathname } from "next/navigation";
+import { useSettingsStore } from "@/stores/useSettingStore";
+
 
 const Footer = () => {
+  const { settings, loading } = useSettingsStore()
 
   const pathName = usePathname();
 
   const communications = [
     {
       label: 'Facebook',
-      Icon: IoLogoFacebook
+      Icon: IoLogoFacebook,
+      href: settings?.facebook
     },
     {
       label: 'Whatsapp',
-      Icon: IoLogoWhatsapp
+      Icon: IoLogoWhatsapp,
+      href: settings?.whatsapp
     },
     {
       label: 'Instagram',
-      Icon: IoLogoInstagram
+      Icon: IoLogoInstagram,
+      href: settings?.instagram
     }
   ];
 
   return (
     (pathName !== '/login' && pathName !== '/register') 
     ? (
+      loading ||
       <footer className="bg-cc-dark text-cc-bg-light overflow-hidden relative">
       <Background />
       <div className="container mx-auto relative z-10">
@@ -41,29 +49,29 @@ const Footer = () => {
                 width={100}
                 height={100}
                 className="w-[100px!important] h-[50px] rounded-lg"
-                src={headerData.logo} alt="logo" />
-              <span className="text-large1 text-cc-red uppercase font-bold">{headerData.name}</span>
+                src={`${DOMAINImage}/${settings?.logo}`} alt="logo" />
+              <span className="text-large1 text-cc-red uppercase font-bold">{settings?.siteName}</span>
             </Link>
 
-            <p>{headerData.description}</p>
+            <p className="text-right">{settings?.description}</p>
 
             <div className="text-medium1 flex flex-col gap-3 my-4">
               {communications.map(link => (
-                <Link 
-                  href=""  
+                <a 
+                  href={link.href}  
                   key={link.label}
                   className="flex gap-2 items-center text-small hover:text-cc-red transition-colors duration-150 group">
                     <link.Icon className="text-large2 bg-cc-red p-1 rounded-md text-cc-white "/>
                     {link.label}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
 
           {/* second column */}
           <div>
-            <Subtitle title="Quick Links" />
-            {headerData.links.map(link => (
+            <Subtitle title="روابط سريعة" />
+            {mainLinks.map(link => (
               <Link 
                 className="flex items-center text-small gap-2 hover:pl-2 hover:text-cc-red transition-all duration-150"
                 href={link.href}
@@ -76,16 +84,16 @@ const Footer = () => {
           </div>
           {/* third column */}
           <div>
-            <Subtitle title="Newsletter" />
-            <p>Subscribe our newsletter to get latest update and news</p>
+            <Subtitle title="أحدث الأخبار" />
+            <p>اشترك في النشرة الإخبارية لدينا للحصول على آخر التحديثات والأخبار</p>
             <form className="mt-4 space-y-4" action="">
               <input 
                 className="outline-none bg-cc-white p-3 text-gray-900 text-medium1 rounded-2xl md:w-full"
                 type="email" 
-                placeholder="Your Email"
+                placeholder="الإيميل"
                 // value={''}
               />
-              <Button text="Subscribe Now" Icon={IoSend} reverse classes="hover:bg-cc-white hover:text-cc-red rounded-full" />
+              <Button text="اشترك الآن" Icon={IoSend} reverse classes="hover:bg-cc-white hover:text-cc-red rounded-full" />
             </form>
           </div>
 

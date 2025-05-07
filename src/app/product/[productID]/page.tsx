@@ -1,12 +1,11 @@
 import Image from "next/image";
-import { reviews, IoMdTime } from "@/lib/utils";
-import { getSingleProduct } from "@/lib/apiCalls/prductsApiCalls";
-import { SingleProductApiResponse } from "@/lib/Dto";
+import { IoMdTime } from "@/lib/utils";
 import SingleCarImages from "@/components/cards/SingleCarImages";
 import CarAttributes from "@/components/cards/CarAttributes";
 import ReviewCard2 from "@/components/cards/ReviewCard2";
 import AddReviewSection from "@/components/sections/AddReviewSection";
-import { DOMAIN } from "@/lib/constance";
+import { fetchSingleProduct } from "@/lib/apiCalls/PublicAPIsCall"
+import { DOMAINImage } from "@/lib/constance";
 
 interface SingleProductPageProps {
   params: Promise<{ productID: string }>
@@ -15,25 +14,12 @@ interface SingleProductPageProps {
 const SingleProductPage = async ({ params }: SingleProductPageProps) => {
 
   const { productID } = await params;
-  const getProduct = await getSingleProduct(productID) as SingleProductApiResponse;
-  const data = getProduct.data;
-  // console.log(data)
-  // const res = await fetch(`${DOMAIN}/Car/ShowCar/${3}`)
-  // console.log(res.status)
-  // console.log(res.statusText)
-  // console.log(res.ok) 
-  // const data = await res.json()
-  // console.log(data)
+  const data = await fetchSingleProduct(productID)
 
-  // const carImages = [
-  //   { id: 0, src: data.car.img1 },
-  //   { id: 1, src: data.car.img2 },
-  //   { id: 2, src: data.car.img3 },
-  // ];
   const carImages = [
-    { id: 0, src: '/images/slider-4.jpeg' },
-    { id: 1, src: '/images/slider-2.jpeg' },
-    { id: 2, src: '/images/slider-3.jpeg' },
+    { id: 0, src: `${DOMAINImage}/${data.car.img1}` },
+    { id: 1, src: `${DOMAINImage}/${data.car.img2}` },
+    { id: 2, src: `${DOMAINImage}/${data.car.img3}` },
   ];
 
   const carAttributes = {
@@ -45,60 +31,53 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
     engine: data.car.engine,
     color: data.car.color
   };
-  // const carAttributes = {
-  //   system: 'Automatic',
-  //   model: 'S3000',
-  //   year: '2020',
-  //   kilometers: '5000',
-  //   fuel: 'Desal',
-  //   engine: '4000',
-  //   color: 'Red'
-  // };
 
   return (
-    <section className="p-5 md:p-7 ">
+    <section className="p-5 md:p-7">
       <div className="container mx-auto">
         
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-5">
           {/* clumn one */}
           <div className="lg:col-span-4 space-y-5">  
-            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">
+            <div className="bg-cc-white rounded-3xl p-5 md:p-7 space-y-2 shadow-type2">
               <h2 className="font-semibold text-2xl md:text-3xl">{data.car.brand}</h2>
-              {/* <h2 className="font-semibold text-2xl md:text-3xl">BMW</h2> */}
               <p className="flex items-center gap-2 text-base text-gray-700">
                 <IoMdTime className="text-cc-red text-xl" />
-                Listed On: <span className="text-gray-600">{data.car.createDate}</span>
-                {/* Listed On: <span className="text-gray-600">jan 22, 2025</span> */}
+                Listed On: <span className="text-gray-600">{new Date(data.car.createDate).toDateString()}</span>
               </p>
               <SingleCarImages 
                 images={carImages}
               />
             </div>
-            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">
-              <h2 className="font-semibold text-2xl md:text-3xl mb-4">Key Information</h2>
+            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 text-right">
+              <h2 className="font-semibold text-2xl md:text-3xl mb-4">المعلومات الرئيسية</h2>
               {/* Attributes Grid */}
               <CarAttributes 
                 attributes={carAttributes}
               />
             </div>
-            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">
-              <h2 className="font-semibold text-2xl md:text-3xl mb-4">Description</h2>
+            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 text-right">
+              <h2 className="font-semibold text-2xl md:text-3xl mb-4">الوصف</h2>
               <p className="text-base leading-6 text-gray-600">
                 {data.car.description} 
-                {/* some details about this car some details about this car some details about this car some details about this car some details about this car   */}
               </p>
             </div>
-            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">
-              <h2 className="font-semibold text-2xl md:text-3xl mb-4">Reviews</h2>
-              {data.reviews.map(review =>
-                <ReviewCard2 
-                  key={review.id}
-                  name={review.name}
-                  text={review.contentMsg}
-                  stars={review.stars}
-                />
+            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 text-right">
+              <h2 className="font-semibold text-2xl md:text-3xl mb-4">التعليقات</h2>
+              {data.reviews.length > 0 
+              ? (
+                  data.reviews.map(review =>
+                  <ReviewCard2 
+                    key={review.id}
+                    name={review.name}
+                    text={review.contentMsg}
+                    stars={review.stars}
+                  />
+                )
+              ) 
+              : (
+                  <p className="text-gray-600 text-xl ">لا يوجد تعليقات بعد، كن أول من يعلق</p>
               )}
-              
             </div>
 
           </div>
@@ -108,22 +87,19 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
             <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 flex gap-4 items-center">
               <Image 
                 className="rounded-full w-20 h-20"
-                src="http://192.168.1.105:5059/Upload/ProfileImg/27d42f19-975c-49e5-b866-539826729d09.jpg" 
+                src={`${DOMAINImage}/${data.user.picture}`} 
                 alt="owner image" 
                 width={100} 
                 height={100} />
               
               <div>
                 <h3 className="font-bold text-xl  ">{data.user.name}</h3>
-                {/* <h3 className="font-bold text-xl  ">Mahmoud Abu Lail</h3> */}
-                {/* <p className="text-base text-gray-600 border-b border-gray-500 pb-1 mb-1">mahmoud@gmail.com</p> */}
-                <p className="text-base text-gray-600 ">{data.user.phone} <span className="text-gray-800 text-lg">Damascus</span></p>
-                {/* <p className="text-base text-gray-600 ">0938293299 <span className="text-gray-800 text-lg">Damascus</span></p> */}
+                <p className="text-base text-gray-600 ">{data.user.phone}</p>
+                <p className="text-gray-800 text-lg">{data.user.city || 'غير محدد'}</p>
               </div>
             </div>
             <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">
               <AddReviewSection 
-                // userId={data.user.id}
                 carId={data.car.id}
               />
             </div>

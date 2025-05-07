@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 export type User = {
     id: string;
-    userName: string;
+    fullName: string;
     email: string;
     city: string;
     phoneNumber: string;
@@ -13,16 +13,22 @@ export type User = {
 } | null;
 
 type State = {
-    user: User;
-    setUser: (user: User) => void;
+    user: User
+    setUser: (user: User) => void
+    removeUser: () => void
 }
 
 export const useUserStore = create<State>()(
-   
+    persist(
         (set) => ({
             user: null,
-            setUser: (user) => set({ user })
+            setUser: (user) => set({ user }),
+            removeUser: () => set( { user: null })
         }),
-       
-    
+        {
+            name: 'User-Store',
+            storage: typeof window !== 'undefined' ? createJSONStorage(() => localStorage) : undefined,
+            skipHydration: true,
+        }
+    )
 );

@@ -6,9 +6,9 @@ import { IoSend } from "@/lib/utils";
 import { RegisterUserSchema } from "@/lib/validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { registerFunc } from "@/lib/apiCalls/authApiCalls";
+import { registerFunc } from "@/lib/apiCalls/authAPIsCall";
+import InputImageField from "./InputImageField";
+import { useRouter } from "next/navigation";
 
 
 type FormData = {
@@ -18,10 +18,12 @@ type FormData = {
   confirmPassword: string;
   number: string;
   city: string;
-  avatar?: FileList | null;
+  avatar?: FileList;
 };
 
 const RegisterForm = () => {
+
+  const router = useRouter();
 
   const { 
     register, 
@@ -47,23 +49,9 @@ const RegisterForm = () => {
       if (data.avatar?.[0])
         formData.append('File1', data.avatar[0])
       
-      registerFunc(formData, reset)
+      registerFunc(formData, reset, router.push, router.refresh)
 
   }
-
-  const [preview, setPreview] = useState<string | null>(null);
-
-  useEffect(() => {
-    const file = watch("avatar")?.[0];
-    if (file) {
-      const reader = URL.createObjectURL(file);
-      setPreview(reader);
-      return () => URL.revokeObjectURL(reader);
-    } else {
-      setPreview(null);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch("avatar")]);
 
   return (
     <form 
@@ -73,64 +61,39 @@ const RegisterForm = () => {
 
         {/*  */}
         <div className="col-span-full">
-          <label className="block text-gray-800 text-small mb-2">Profile Picture</label>
-          <div className="flex items-center gap-4">
-            {preview ? (
-              <Image
-                src={preview}
-                alt="Preview"
-                width={80}
-                height={80}
-                className="rounded-lg object-fit w-20 h-20"
-              />
-            ) : (
-              <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
-                <span className="text-gray-500">No image</span>
-              </div>
-            )}
-            <label
-              htmlFor="avatar"
-              className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
-            >
-              Choose Image
-            </label>
-            <input
-              type="file"
-              id="avatar"
-              accept="image/*"
-              className="hidden"
-              {...register("avatar")}
-            />
-          </div>
-          {errors.avatar && (
-            <p className="text-cc-red text-sm mt-1">{errors.avatar.message}</p>
-          )}
+          <InputImageField 
+            label="الصورة الشخصية"
+            id="avatar"
+            register={register}
+            error={errors.avatar}
+            watch={watch}
+          />
         </div>
         {/*  */}
 
         <InputField 
-            label="Full Name"
+            label="الاسم الكامل"
             id="userName"
             type="text"
             register={register}
             error={errors.userName}
         />
         <InputField 
-            label="Email"
+            label="الإيميل"
             id="email"
             type="email"
             register={register}
             error={errors.email}
         />
         <InputField 
-            label="Password"
+            label="كلمة السر"
             id="password"
             type="password"
             register={register}
             error={errors.password}
         />
         <InputField 
-            label="Confirm Password"
+            label="تأكيد كلمة السر"
             id="confirmPassword"
             type="password"
             register={register}
@@ -140,21 +103,21 @@ const RegisterForm = () => {
             }
         />
         <InputField 
-            label="Mobile Number"
+            label="رقم الهاتف"
             id="number"
             type="text"
             register={register}
             error={errors.number}
         />
         <InputField 
-            label="City"
+            label="المدينة"
             id="city"
             type="text"
             register={register}
             error={errors.city}
         />
         <Button 
-            text="Register"
+            text="إنشاء حساب"
             type="submit"
             Icon={IoSend}
             reverse

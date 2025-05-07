@@ -7,7 +7,7 @@ import { LoginUserSchema } from "@/lib/validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { loginFunc } from "@/lib/apiCalls/authApiCalls";
+import { loginFunc } from "@/lib/apiCalls/authAPIsCall";
 
 type FormData = {
     email: string;
@@ -28,31 +28,32 @@ const LoginForm = () => {
 
     
     const onSubmit = async (data: FormData) => {
-    
-        loginFunc(data.email, data.password, router.replace, reset);
+        console.log('sss');
+        loginFunc(data.email, data.password, reset, router.push, router.refresh);
+        console.log('eee');
     }   
 
   return (
     <form 
-        className="flex flex-col gap-4 w-full"
+        className="flex flex-col gap-4 w-full text-right"
         onSubmit={handleSubmit(onSubmit)}
         noValidate>
         <InputField 
-            label="Email"
+            label="الإيميل"
             id="email"
             type="email"
             register={register}
             error={errors.email}
         />
         <InputField 
-            label="Password"
+            label="كلمة السر"
             id="password"
             type="password"
             register={register}
             error={errors.password}
         />
         <Button 
-            text="Login"
+            text="تسجيل الدخول"
             type="submit"
             Icon={IoSend}
             disabled={isSubmitting}

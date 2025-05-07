@@ -2,17 +2,29 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import ReviewCard from '@/components/cards/ReviewCard';
-import { reviews, IoArrowForward, IoArrowBack } from '@/lib/utils';
+import { IoArrowForward, IoArrowBack } from '@/lib/utils';
 import SectionHeader from '@/components/sections/SectionHeader';
+import { Reviews } from '@/lib/Dto';
+import { fetchReviews } from '@/lib/apiCalls/PublicAPIsCall';
 
 const ReviewsSection = () => {
+
+    const [reviews, setReviews] = useState<Reviews[]>([])
+    
+      useEffect(() => {
+        async function getReviews() {
+          const response = await fetchReviews()
+          setReviews(response)
+          console.log(response, response.length)
+        }
+        getReviews()
+      }, [])
 
     const interval = 3000;
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextIndex = useCallback(() => {
-        setCurrentIndex((prev) => (prev + 1) % reviews.length);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setCurrentIndex((prev) => (prev + 1) % reviews.length)
     }, [reviews.length]);
 
     const prevIndex = () => {
@@ -34,9 +46,9 @@ const ReviewsSection = () => {
         <section className="py-16 w-full bg-white">
             <div className="container mx-auto px-4">
                 <SectionHeader 
-                    subtitle="Customer Reviews"
-                    title="What Our Client"
-                    span={"Say's"}
+                    subtitle="تعليقات المستخدمين"
+                    title="عملائنا ماذا"
+                    span={"يقولون"}
                 />
             
                 <div className="flex gap-2 py-2 overflow-hidden">
@@ -47,7 +59,11 @@ const ReviewsSection = () => {
                         style={{
                         transform: `translateX(calc(-${(currentIndex * 100)}% - ${currentIndex * 8}px))`
                         }}>
-                        <ReviewCard {...review} />
+                        <ReviewCard  
+                            name={review.name}
+                            text={review.contentMsg}
+                            stars={review.stars}
+                        />
                     </div>
                     ))}
                 </div>

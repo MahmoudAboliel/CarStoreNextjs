@@ -3,31 +3,62 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { headerData, IoMenu, IoClose } from "@/lib/utils";
+import { IoMenu, IoClose } from "@/lib/utils";
+import { DOMAINImage, mainLinks } from "@/lib/constance";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import Cookie from "js-cookie"
+import { getCookie } from "cookies-next";
 import { useSettingsStore } from "@/stores/useSettingStore";
+import Logout from "@/components/Logout";
+import { fetchSettings } from "@/lib/apiCalls/PublicAPIsCall";
+import { fetchProfile } from "@/lib/apiCalls/authAPIsCall";
+import { useUserStore } from "@/stores/useUserStore";
 
 const Header = () => {
 
-  const navRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLElement>(null);
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
-  const pathName = usePathname();
-  const [token, setToken] = useState<string | null>(null);
+  const { settings, setSettings, setLoading } = useSettingsStore()
+  const { setUser } = useUserStore()
+  const isAdmin = getCookie('isAdmin')?.toString()
+
+  useEffect(() => {
+    const token = getCookie('token')?.toString()
+    const fetchSetting = async () => {
+      setLoading(true)
+      if (token) {
+        const user = await fetchProfile(token)
+        setUser(user)
+
+      }
+      
+      const settingsRes = await fetchSettings()
+      if (settingsRes !== undefined)
+        setSettings(settingsRes)
+
+      setLoading(false)
+    };
+
+
+
+    fetchSetting();
+  }, [setLoading, setSettings, setUser]);
+
+  const navRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
+  
+  const [openMenu, setOpenMenu] = useState<boolean>(false)
+  const pathName = usePathname()
+  
+
+  const [token, setToken] = useState<string | null>(null)
+  useEffect(() => {
+    setToken(getCookie('token')?.toString() || null)
+  }, [setToken])
 
   const styles = {
-    link: 'text-medium1 rounded-md hover:text-cc-red hover:bg-cc-red/5 transition-all duration-150',
+    link: 'text-medium1 rounded-md hover:text-cc-red transition-all duration-150',
     activeLink: 'text-cc-red font-semibold',
   };
 
-  const { settings, loading } = useSettingsStore()
-
-  // console.log(loading)
-  useEffect(() => {
-    setToken(Cookie.get('token') || null)
-  }, [token]);
 
   useEffect(() => {
     gsap.from(headerRef.current, { 
@@ -35,8 +66,8 @@ const Header = () => {
       opacity: 0,
       duration: 0.8,
       ease: 'power3.out', 
-    });
-  }, []);
+    })
+  }, [])
 
   useEffect(() => {
     if (openMenu) {
@@ -45,20 +76,20 @@ const Header = () => {
         opacity: 1,
         duration: 2,
         ease: 'power3.out'
-      });
+      })
     } else {
       gsap.to(navRef.current, {
         x: '100%',
         opacity: 0,
         duration: 2,
         ease: 'power3.out'
-      });
+      })
     }
-  }, [openMenu]);
+  }, [openMenu])
 
   useEffect(() => {
-    setOpenMenu(false);
-  }, [pathName]);
+    setOpenMenu(false)
+  }, [pathName])
   
   return (
     (pathName !== '/login' && pathName !== '/register') 
@@ -75,45 +106,54 @@ const Header = () => {
             width={100}
             height={100}
             className="w-[55px!important] h-[40px] rounded-lg"
-            src={settings?.logo || '/images/logo-1.jpg'} alt="logo" />
+            src={`${DOMAINImage}/${settings?.logo}`} alt="logo" />
           <span className="text-large1 text-cc-red uppercase font-bold">{settings?.siteName}</span>
           
         </Link>
         
         {/* Main Navbar */}
         <nav className="hidden md:flex items-center gap-3 text-gray-900">
-          {headerData.links.map(link => 
+          {mainLinks.map(link => 
             token 
             ? (
+              isAdmin === 'true' 
+              ? link.href !== '/user' &&
                 (link.href !== '/login' && link.href !== '/register') &&
-                <Link 
-                  href={link.href}
-                  key={link.href}
-                  className={`${pathName === link.href && `${styles.activeLink} -translate-y-1`} ${styles.link} hover:-translate-y-1 relative`}>
-                    {link.label}
-                    <span className={`${pathName === link.href && 'absolute -bottom-1 w-2/5 h-[3px] left-1/2 -translate-x-1/2 bg-cc-red'}`} />
-                </Link>
+                  <MainNavLink 
+                    key={link.href}
+                    href={link.href.split('?')[0]}
+                    pathName={pathName}
+                    stylesActive={styles.activeLink}
+                    stylesLink={styles.link}
+                    label={link.label}
+                  />
+                : link.href !== '/admin' &&
+                  (link.href !== '/login' && link.href !== '/register') &&
+                  <MainNavLink 
+                    key={link.href}
+                    href={link.href.split('?')[0]}
+                    pathName={pathName}
+                    stylesActive={styles.activeLink}
+                    stylesLink={styles.link}
+                    label={link.label}
+                  />
               )
             : (
-                <Link 
-                  href={link.href}
-                  key={link.href}
-                  className={`${pathName === link.href && `${styles.activeLink} -translate-y-1`} ${styles.link} hover:-translate-y-1 relative`}>
-                    {link.label}
-                    <span className={`${pathName === link.href && 'absolute -bottom-1 w-2/5 h-[3px] left-1/2 -translate-x-1/2 bg-cc-red'}`} />
-                </Link>
+              (link.href !== '/user' && link.href !== '/admin') &&
+              <MainNavLink 
+                key={link.href}
+                href={link.href.split('?')[0]}
+                pathName={pathName}
+                stylesActive={styles.activeLink}
+                stylesLink={styles.link}
+                label={link.label}
+              />
               )
           )}
           {token &&
-            <button
-              onClick={() => {
-                Cookie.remove('token');
-                setToken(null);
-                // localStorage
-              }}
-              className="border-2 border-cc-red  p-1 rounded-md text-cc-red font-bold hover:bg-cc-red/20 transition duration-150">
-              تسجيل الخروج
-            </button>}
+            <Logout 
+              setToken={setToken}
+            />}
         </nav>
         
         {/* Toggle for Mobile */}
@@ -127,44 +167,83 @@ const Header = () => {
         {/* Mobile Navbar */}
         <nav ref={navRef}
           className={`fixed md:hidden left-0 top-[66px] h-fit right-0 bottom-0 flex flex-col bg-cc-white shadow-type2 transform translate-x-full opacity-0 p-6 gap-1 rounded-2xl`}>
-            {headerData.links.map(link => 
-              token 
-              ? (
+          {mainLinks.map(link => 
+            token 
+            ? (
+              isAdmin === 'true' 
+              ? link.href !== '/user' &&
                 (link.href !== '/login' && link.href !== '/register') &&
-                <Link 
-                  href={link.href}
-                  key={link.href}
-                  className={`${pathName === link.href && `${styles.activeLink} pl-2`} ${styles.link} hover:pl-2`}>
-                    {link.label}
-                </Link>
-              )
-              : (
-                <Link 
-                  href={link.href}
-                  key={link.href}
-                  className={`${pathName === link.href && `${styles.activeLink} pl-2`} ${styles.link} hover:pl-2`}>
-                    {link.label}
-                </Link>
-              )
-                
-              )}
-              {token &&
-              <button
-                onClick={() => {
-                  Cookie.remove('token');
-                  setToken(null);
-                  // localStorage
-                }}
-                className="border-2 border-cc-red  p-1 rounded-md text-cc-red font-bold hover:bg-cc-red/20 transition duration-150">
-                تسجيل الخروج
-              </button>}
+                  <SecondaryNavLink 
+                    key={link.href}
+                    href={link.href.split('?')[0]}
+                    pathName={pathName}
+                    stylesActive={styles.activeLink}
+                    stylesLink={styles.link}
+                    label={link.label}
+                  />
+                : link.href !== '/admin' &&
+                  (link.href !== '/login' && link.href !== '/register') &&
+                  <SecondaryNavLink 
+                    key={link.href}
+                    href={link.href.split('?')[0]}
+                    pathName={pathName}
+                    stylesActive={styles.activeLink}
+                    stylesLink={styles.link}
+                    label={link.label}
+                  />
+            )
+            : (
+              (link.href !== '/user' && link.href !== '/admin') &&
+              <SecondaryNavLink 
+                key={link.href}
+                href={link.href.split('?')[0]}
+                pathName={pathName}
+                stylesActive={styles.activeLink}
+                stylesLink={styles.link}
+                label={link.label}
+              />
+            )  
+          )}
+          {token &&
+          <Logout 
+            setToken={setToken}
+          />}
         </nav>
 
       </div>
     </header>
     )
     
-  );
+  )
 }
 
-export default Header;
+export default Header
+
+interface MainNavLinkProps {
+  href: string; 
+  pathName: string; 
+  stylesActive: string; 
+  stylesLink: string;
+  label: string;
+
+}
+const MainNavLink = ({ href, pathName, stylesActive, stylesLink, label}: MainNavLinkProps) => {
+  return (
+    <Link 
+      href={href}
+      className={`${pathName === href && `${stylesActive} -translate-y-1`} ${stylesLink} hover:-translate-y-1 relative`}>
+      {label}
+      <span className={`${pathName === href && 'absolute -bottom-1 w-2/5 h-[3px] left-1/2 -translate-x-1/2 bg-cc-red'}`} />
+    </Link>
+  )
+}
+
+const SecondaryNavLink = ({ href, pathName, stylesActive, stylesLink, label}: MainNavLinkProps) => {
+  return (
+    <Link 
+      href={href}
+      className={`${pathName === href && `${stylesActive} pl-2`} ${stylesLink} hover:pl-2`}>
+            {label}
+    </Link>
+  )
+}

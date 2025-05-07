@@ -6,13 +6,12 @@ import { IoAddCircle } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddProductSchema } from "@/lib/validation";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import InputImageField from "./InputImageField";
+import { addProduct } from "@/lib/apiCalls/userAPIsCall";
 
-interface AddProductFormProps {
+interface Props {
     classes: string;
+    token: string;
 }
 
 type FormData = {
@@ -29,8 +28,10 @@ type FormData = {
     engineSize: string;
     color: string;
     price: string;
+    description: string;
+    city: string;
 }
-const AddProductForm = ({ classes }:AddProductFormProps) => {
+const AddProductForm = ({ classes, token }: Props) => {
 
     const { 
         register, 
@@ -43,56 +44,31 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
       });
 
     const onSubmit = async (data: FormData) => {
-        console.log(data);
+        
+        const formData = new FormData()
+        if (data.img1?.[0])
+            formData.append("File1", data.img1[0])
+        if (data.img2?.[0])
+            formData.append("File2", data.img2[0])
+        if (data.img3?.[0])
+            formData.append("File3", data.img3[0])
+        formData.append("Model", data.model)
+        formData.append("Brand", data.brand)
+        formData.append("Color", data.color)
+        formData.append("Engine", data.engineSize)
+        formData.append("Price", data.price)
+        formData.append("Fuel", data.fuelType)
+        formData.append("Description", data.description)
+        formData.append("KiloMetrage", data.kilometers)
+        formData.append("Status", data.status)
+        formData.append("Transmission", data.transmission)
+        formData.append("City", data.city)
+        formData.append("Year", data.year)
 
-        await axios.post("");
+        await addProduct(formData, token)
+
+        
     }
-
-    const [preview1, setPreview1] = useState<string | null>(null);
-    const [preview2, setPreview2] = useState<string | null>(null);
-    const [preview3, setPreview3] = useState<string | null>(null);
-    
-    useEffect(() => {
-      const file1 = watch("img1")?.[0];
-    
-      if (file1) {
-        const reader1 = URL.createObjectURL(file1);
-        setPreview1(reader1);
-        return () => URL.revokeObjectURL(reader1);
-      } else {
-        setPreview1(null);
-      }
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [watch("img1")]);
-    
-    useEffect(() => {
-      const file2 = watch("img2")?.[0];
-    
-      if (file2) {
-        const reader2 = URL.createObjectURL(file2);
-        setPreview2(reader2);
-        return () => URL.revokeObjectURL(reader2);
-      } else {
-        setPreview2(null);
-      }
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [watch("img2")]);
-    
-    useEffect(() => {
-      const file3 = watch("img3")?.[0];
-    
-      if (file3) {
-        const reader3 = URL.createObjectURL(file3);
-        setPreview3(reader3);
-        return () => URL.revokeObjectURL(reader3);
-      } else {
-        setPreview3(null);
-      }
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [watch("img3")]);
     
   return (
     <div className={`${classes} overflow-y-auto mx-auto`}>
@@ -103,128 +79,39 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
                         
                 <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 w-full">
                     <InputImageField 
-                        label="Image Test"
+                        label="الصورة الأولى"
                         id="img1"
-                        preview={preview1}
                         register={register}
                         error={errors.img1}
+                        watch={watch}
                     />
-                    <div>
-                        <label className="block text-gray-800 text-small mb-2">Image One</label>
-                        <div className="flex items-center gap-4">
-                            {preview1 ? (
-                            <Image
-                                src={preview1}
-                                alt="Preview"
-                                width={80}
-                                height={80}
-                                className="rounded-lg object-fit w-20 h-20"
-                            />
-                            ) : (
-                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
-                                <span className="text-gray-500">No image</span>
-                            </div>
-                            )}
-                            <label
-                            htmlFor="img1"
-                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
-                            >
-                            Choose Image
-                            </label>
-                            <input
-                            type="file"
-                            id="img1"
-                            accept="image/*"
-                            className="hidden"
-                            {...register("img1")}
-                            />
-                        </div>
-                        {errors.img1 && (
-                            <p className="text-cc-red text-sm mt-1">{errors.img1.message}</p>
-                        )}
-                    </div>
-    
-                    <div>
-                        <label className="block text-gray-800 text-small mb-2">Image Two</label>
-                        <div className="flex items-center gap-4">
-                            {preview2 ? (
-                            <Image
-                                src={preview2}
-                                alt="Preview"
-                                width={80}
-                                height={80}
-                                className="rounded-lg object-fit w-20 h-20"
-                            />
-                            ) : (
-                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
-                                <span className="text-gray-500">No image</span>
-                            </div>
-                            )}
-                            <label
-                            htmlFor="img2"
-                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
-                            >
-                            Choose Image
-                            </label>
-                            <input
-                            type="file"
-                            id="img2"
-                            accept="image/*"
-                            className="hidden"
-                            {...register("img2")}
-                            />
-                        </div>
-                        {errors.img2 && (
-                            <p className="text-cc-red text-sm mt-1">{errors.img2.message}</p>
-                        )}
-                    </div>
-    
-                    <div>
-                        <label className="block text-gray-800 text-small mb-2">Image Three</label>
-                        <div className="flex items-center gap-4">
-                            {preview3 ? (
-                            <Image
-                                src={preview3}
-                                alt="Preview"
-                                width={80}
-                                height={80}
-                                className="rounded-lg object-fit w-20 h-20"
-                            />
-                            ) : (
-                            <div className="rounded-lg bg-gray-200 w-20 h-20 flex items-center justify-center">
-                                <span className="text-gray-500">No image</span>
-                            </div>
-                            )}
-                            <label
-                            htmlFor="img3"
-                            className="cursor-pointer bg-cc-red text-white px-4 py-2 rounded-lg hover:bg-cc-dark transition"
-                            >
-                            Choose Image
-                            </label>
-                            <input
-                            type="file"
-                            id="img3"
-                            accept="image/*"
-                            className="hidden"
-                            {...register("img3")}
-                            />
-                        </div>
-                        {errors.img3 && (
-                            <p className="text-cc-red text-sm mt-1">{errors.img3.message}</p>)}
-                    </div>
+                    <InputImageField 
+                        label="الصورة الثانية"
+                        id="img2"
+                        register={register}
+                        error={errors.img2}
+                        watch={watch}
+                    />
+                    <InputImageField 
+                        label="الصورة الثالثة"
+                        id="img3"
+                        register={register}
+                        error={errors.img3}
+                        watch={watch}
+                    />
                 </div>
             </div>
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="transmission">Transmission</label>
+                    htmlFor="transmission">النظام</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="transmission"
                     {...register("transmission")}
                 >
-                    <option value="autometic" defaultChecked>Autometic</option>
-                    <option value="manual">Manual</option>
+                    <option value="autometic" defaultChecked>أوتوماتيكي</option>
+                    <option value="manual">يدوي</option>
                 </select>
                 {errors.transmission && (
                     <p className="mt-1 text-sm text-cc-red">
@@ -236,7 +123,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="fuelType">Fuel Type</label>
+                    htmlFor="fuelType">نوع الوقود</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="fuelType"
@@ -263,14 +150,14 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="status">Car Status</label>
+                    htmlFor="status">حالة السيارة</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="status"
                     {...register("status")}
                 >
-                    <option value="new" defaultChecked>New Car</option>
-                    <option value="used">Used Car</option>
+                    <option value="new" defaultChecked>جديدة</option>
+                    <option value="used">مستعملة</option>
                 </select>
                 {errors.status && (
                     <p className="mt-1 text-sm text-cc-red">
@@ -280,7 +167,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             </div>
 
             <InputField 
-                label="Brand Name"
+                label="الماركة"
                 id="brand"
                 type="text"
                 register={register}
@@ -288,7 +175,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
 
             <InputField 
-                label="Car Model"
+                label="الموديل"
                 id="model"
                 type="text"
                 register={register}
@@ -297,7 +184,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
 
             <InputField 
-                label="Year"
+                label="سنة الصنع"
                 id="year"
                 type="text"
                 register={register}
@@ -306,7 +193,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
 
             <InputField 
-                label="Price"
+                label="السعر"
                 id="price"
                 type="text"
                 register={register}
@@ -315,7 +202,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
 
             <InputField 
-                label="Kilometers"
+                label="عدد الكيلومترات"
                 id="kilometers"
                 type="text"
                 register={register}
@@ -323,7 +210,7 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
 
             <InputField 
-                label="Engine Size"
+                label="حجم المحرك"
                 id="engineSize"
                 type="text"
                 register={register}
@@ -331,11 +218,25 @@ const AddProductForm = ({ classes }:AddProductFormProps) => {
             />
             
             <InputField 
-                label="Color"
+                label="اللون"
                 id="color"
                 type="text"
                 register={register}
                 error={errors.color}
+            />
+            <InputField 
+                label="المدينة"
+                id="city"
+                type="text"
+                register={register}
+                error={errors.city}
+            />
+            <InputField 
+                label="الوصف"
+                id="description"
+                type="text"
+                register={register}
+                error={errors.description}
             />
             
             <Button 

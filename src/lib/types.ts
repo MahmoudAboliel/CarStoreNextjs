@@ -15,3 +15,12 @@ export interface CarCardProps {
     attributes: Record<string, string>; // {system: 'Automatic', model: 'Benz', ...}
     detailsLink: string;
 }
+
+export interface FetchProfile {
+    id: string;
+    city: string;
+    userName: string;
+    email: string;
+    phoneNumber: string;
+    profileImage: string;
+}

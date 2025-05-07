@@ -4,84 +4,81 @@ import Button from "@/components/Button";
 import InputField from "./InputField";
 import { IoSearch } from "@/lib/utils";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
-interface FilterFormProps {
+interface Props {
     classes: string;
 }
-const FilterForm = ({ classes }:FilterFormProps) => {
 
-    const { 
-        register, 
-        // handleSubmit, 
-        formState: { errors, isSubmitting },
-        // watch,
-        // reset 
-      } = useForm<FormData>();
+const FilterForm = ({ classes }: Props) => {
 
-    const [status, setStatus] = useState('any');
-    const [brand, setBrand] = useState('any');
-    const [model, setModel] = useState('any');
-    const [kilometers, setKilometers] = useState('any');
-    const [transmission, settransmission] = useState('any');
-    const [fuelType, setFuelType] = useState('any');
-    const [engineSize, setEngineSize] = useState('any');
-    const [color, setColor] = useState('any');
-    const [year, setYear] = useState('any');
-    const [price, setPrice] = useState('any');
+    const router = useRouter()
+
+    const [status, setStatus] = useState('');
+    const [brand, setBrand] = useState('');
+    const [model, setModel] = useState('');
+    const [kilometers, setKilometers] = useState('');
+    const [transmission, settransmission] = useState('');
+    const [fuelType, setFuelType] = useState('');
+    const [color, setColor] = useState('');
+    const [year, setYear] = useState('');
+    const [price, setPrice] = useState('');
 
     const submitHandler = async (e:React.FormEvent) => {
-        setBrand('')
-        setModel('')
-        setKilometers(kilometers)
-        setEngineSize(engineSize)
-        setColor(color)
-        setYear(year)
-        setPrice(price)
-        e.preventDefault();
-        console.log("selected value: ", {
-            status,
-            brand,
-            model,
-            year,
-            price,
-            errors,
-            isSubmitting
+        e.preventDefault()
+     
+        const filters = {
+            Status: status,
+            Brand: brand,
+            Model: model,
+            Kilometrage: kilometers,
+            Transmission: transmission,
+            Fuel: fuelType,
+            Color: color,
+            Year: year,
+            Price: price,
+        }
+        const params = new URLSearchParams()
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value !== '') {
+                params.append(key, value.trim());
+            }
         });
+        router.push(`/product/search?${params.toString()}`)
     }
   return (
     <div className={`${classes} w-8/10 p-7 bg-cc-white rounded-3xl shadow-type2 overflow-y-auto mx-auto`}>
-        <h2 className="text-large2 text-center mb-5">{`Let's`} Find Your Perfect Car</h2>
+        <h2 className="text-large2 text-center mb-5">دعنا نجد سيارتك المفضلة</h2>
         <form onSubmit={submitHandler}
             className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-end gap-2.5">
             
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="transmission">Transmission</label>
+                    htmlFor="transmission">النظام</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="transmission"
                     value={transmission}
                     onChange={e => settransmission(e.target.value)}
                 >
-                    <option value="any">Any</option>
-                    <option value="autometic">Autometic</option>
-                    <option value="manual">Manual</option>
+                    <option value="">غير محدد</option>
+                    <option value="autometic">أوتوماتيكي</option>
+                    <option value="manual">يدوي</option>
                 </select>
             </div>
 
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="fuelType">Fuel Type</label>
+                    htmlFor="fuelType">نوع الوقود</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="fuelType"
                     value={fuelType}
                     onChange={e => setFuelType(e.target.value)}
                 >
-                    <option value="any">Any</option>
+                    <option value="">غير محدد</option>
                     <option value="gasoline">{'Gasoline (Petrol)'}</option>
                     <option value="diesel">{'Diesel'}</option>
                     <option value="electricity">{'Electricity'}</option>
@@ -98,80 +95,70 @@ const FilterForm = ({ classes }:FilterFormProps) => {
             <div className="w-full">
                 <label 
                     className="text-gray-800 text-small mb-2 block"
-                    htmlFor="condition">Car Condition</label>
+                    htmlFor="condition">حالة السيارة</label>
                 <select 
                     className="outline-none border border-gray-400 rounded-lg w-full p-2 text-small text-gray-700 focus:border-cc-red focus:shadow focus:shadow-cc-red/40"
                     id="condition"
                     value={status}
                     onChange={e => setStatus(e.target.value)}
                 >
-                    <option value="any">Any</option>
-                    <option value="new">New Car</option>
-                    <option value="used">Used Car</option>
+                    <option value="">غير محدد</option>
+                    <option value="new">جديدة</option>
+                    <option value="used">مستعملة</option>
                 </select>
             </div>
 
+
             <InputField 
-                label="Brand Name"
+                label="الماركة"
                 id="brand"
                 type="text"
-                register={register}
+                value={brand}
+                setValue={setBrand}
             />
 
             <InputField 
-                label="Car Model"
+                label="الموديل"
                 id="model"
                 type="text"
-                register={register}
-
+                value={model}
+                setValue={setModel}
             />
 
             <InputField 
-                label="Year"
+                label="سنة الصنع"
                 id="year"
                 type="text"
-                register={register}
-
+                value={year}
+                setValue={setYear}
             />
 
             <InputField 
-                label="Price"
+                label="السعر"
                 id="price"
                 type="text"
-                register={register}
-
+                value={price}
+                setValue={setPrice}
             />
 
             <InputField 
-                label="Kilometers"
+                label="عدد الكيلومترات"
                 id="kilometers"
                 type="text"
-                register={register}
-            />
-
-            <InputField 
-                label="Fuel Type"
-                id="fuelType"
-                type="text"
-                register={register}
-            />
-
-            <InputField 
-                label="Engine Size"
-                id="engineSize"
-                type="text"
-                register={register}
+                value={kilometers}
+                setValue={setKilometers}
             />
             
             <InputField 
-                label="Color"
+                label="اللون"
                 id="color"
                 type="text"
-                register={register}
+                value={color}
+                setValue={setColor}
             />
             
             <Button 
-                text="Search"
+                text="بحث"
                 Icon={IoSearch}
                 type="submit"
             />

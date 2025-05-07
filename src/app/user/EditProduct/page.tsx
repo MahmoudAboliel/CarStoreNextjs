@@ -6,14 +6,27 @@ const EditProduct = () => {
     <section>
         <div className="container mx-auto">
             <SectionHeader 
-                subtitle="Edit Product"
-                title="Edit your"
-                span="Product"
+                subtitle="المستخدم"
+                title="لوحة التحكم"
+                span="تعديل المنتج"
             />
-            {/* <EditProductForm 
-                classes="relative"
-
-            /> */}
+            <EditProductForm 
+              classes="relative" 
+              token="asdf"
+              // img1={""} 
+              // img2={""} 
+              // img3={""} 
+              // status={""} 
+              // brand={""} 
+              // model={""} 
+              // year={""} 
+              // kilometers={""} 
+              // transmission={""} 
+              // fuelType={""} 
+              // engineSize={""} 
+              // color={""} 
+              // price={""}
+            />
         </div>
     </section>
   );

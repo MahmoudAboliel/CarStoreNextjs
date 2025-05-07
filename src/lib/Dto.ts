@@ -15,30 +15,34 @@ export type Car = {
     img3: string;
     description: string;
     sold: number;
+    isDeleted?: boolean;
     color: string;
     country: string;
     city: string;
     createDate: string;
-    updateDate: string | null;
+    updateDate: string;
+    comments?: number;
 }
 
 export type RegisterApiResponse = {
     data: string;
     errorMessage: string | null;
     status: number;
+    isAdmin: boolean;
 }
 
 export type LoginApiResponse = {
     data: string;
     errorMessage: string | null;
     status: number;
+    isAdmin: boolean;
 }
 
 export type ProfileInfoApiResponse = {
     data: {
         id: string;
         city: string;
-        userName: string;
+        fullName: string;
         email: string;
         phoneNumber: string;
         profileImage: string;
@@ -68,7 +72,14 @@ export type Reviews = {
     stars: number;
     createdDate: string;
     carId: number;
+    userName: string;
+    userId: string;
     updatedDate: string | null;
+}
+export type AddReviewApiResponse = {
+    data: string;
+    errorMessage: string;
+    status: number;
 }
 
 export type SingleProductApiResponse = {
@@ -79,6 +90,7 @@ export type SingleProductApiResponse = {
           name: string;
           picture: string;
           phone: string;
+          city: string;
         },
         reviews: Reviews[]
     };
@@ -110,5 +122,61 @@ export type AddCommentApiResponse = {
     data: string;
     errorMessage: string;
     status: number;
-    isAdmin: boolean;
+}
+
+export type Ad = {
+    createDate: string;
+    description: string;
+    endDate: string;
+    hit: number;
+    id: number;
+    imgName: string;
+    name: string;
+    startDate: string;
+    status?: string;
+    updateDate: string;
+    url: string;
+}
+export type GetAdsApiResponse = {
+    data: Ad[];
+    errorMessage: string;
+    status: number;
+}
+
+export type Users = {
+    id: string;
+    userName: string;
+    email: string;
+    roles: string[];
+    number: string;
+    city?: string;
+    profileImg?: string;
+    isActive: boolean;
+    CreationDate: string;
+    UpdatedDate: string;
+}
+export type GetusersApiResponse = {
+    data: Users[];
+    errorMessage: string;
+    status: number;
+}
+
+export type MainInfo = {
+    users: number | null;
+    soldCars: number | null;
+    existCars: number | null;
+    approvedComments: number | null;
+    commentsOnHold: number | null;
+    ads: number | null;
+}
+export type GetMainInfoApiResponse = {
+    data: MainInfo;
+    errorMessage: string;
+    status: number;
+}
+
+export type GetReviewsApiResponse = {
+    data: Reviews[];
+    errorMessage: string;
+    status: number;
 }

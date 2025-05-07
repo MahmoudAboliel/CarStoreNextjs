@@ -7,7 +7,7 @@ interface AddReviewSectionProps {
 const AddReviewSection = ({ carId }: AddReviewSectionProps) => {
   return (
     <div className="">
-        <h2 className="font-semibold text-2xl md:text-3xl mb-3">Leave A Review</h2>
+        <h2 className="font-semibold text-right text-2xl md:text-3xl mb-3">أترك تعليقاً</h2>
         <AddReviewForm 
             carId={carId}
         />

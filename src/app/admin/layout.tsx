@@ -16,12 +16,14 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+export const dynamic = 'force-dynamic'
 export default async function RootLayout({ children }: Readonly<RootLayoutProps>) {
 
 
     const token = (await cookies()).get('token')?.value
+    const isAdmin = (await cookies()).get('isAdmin')?.value
     
-    if (!token)
+    if (!token || isAdmin !== 'true')
         redirect('/')
     
     return (
@@ -30,9 +32,6 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 items-stretch">
                     <SidebarAdmin 
                         classes="lg:col-span-2" 
-                        name={'Mahmoud Abu Lail'}
-                        email={'mahmoud@gmail.com'}
-                        img={'/images/services.jpg'}
                     />
                     <div className="lg:col-span-4 shadow-type1 bg-white rounded-3xl p-5 md:p-7">
                         {children}
