@@ -6,6 +6,7 @@ import ReviewCard2 from "@/components/cards/ReviewCard2";
 import AddReviewSection from "@/components/sections/AddReviewSection";
 import { fetchSingleProduct } from "@/lib/apiCalls/PublicAPIsCall"
 import { DOMAINImage } from "@/lib/constance";
+import Link from "next/link";
 
 interface SingleProductPageProps {
   params: Promise<{ productID: string }>
@@ -62,12 +63,13 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
                 {data.car.description} 
               </p>
             </div>
-            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 text-right">
+            <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2 text-right max-h-[600px] overflow-y-auto">
               <h2 className="font-semibold text-2xl md:text-3xl mb-4">التعليقات</h2>
               {data.reviews.length > 0 
               ? (
                   data.reviews.map(review =>
                   <ReviewCard2 
+                    date={review.createdDate}
                     key={review.id}
                     name={review.name}
                     text={review.contentMsg}
@@ -93,9 +95,9 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
                 height={100} />
               
               <div>
-                <h3 className="font-bold text-xl  ">{data.user.name}</h3>
+                <Link href={`/product/byUser/${data.user.id}?pageNumber=1`} className="font-bold text-xl underline hover:text-cc-blue duration-150">{data.user.name}</Link>
                 <p className="text-base text-gray-600 ">{data.user.phone}</p>
-                <p className="text-gray-800 text-lg">{data.user.city || 'غير محدد'}</p>
+                <p className="text-gray-800 text-lg">{data.user.city || 'سوريا'}</p>
               </div>
             </div>
             <div className="bg-cc-white rounded-3xl p-5 md:p-7 shadow-type2">

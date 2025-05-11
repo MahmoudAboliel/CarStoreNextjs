@@ -118,6 +118,7 @@ export async function sellProduct(token: string, productId: number) {
 
 export async function addProduct(formData: FormData, token: string) {
     try {
+        console.log(token, formData)
         const res = await fetch(
         `${DOMAIN}/Car/AddCar`, {
           method: 'POST',

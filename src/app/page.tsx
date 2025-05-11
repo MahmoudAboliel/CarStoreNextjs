@@ -1,7 +1,6 @@
 'use server'
 
 import Hero from "@/components/sections/Hero"
-import { slides } from "@/lib/utils"
 import LatestCars from "@/components/sections/LatestCars"
 import ReviewsSection from "@/components/sections/ReviewsSction"
 import AdsSection from "@/components/sections/AdsSection"
@@ -15,7 +14,7 @@ export default async function Home() {
 
   return (
     <main className="w-full">
-      <Hero slides={slides} interval={3000} />
+      <Hero interval={3000} />
       <LatestCars />
       <AboutSection />
       <RegistrationPrompt />

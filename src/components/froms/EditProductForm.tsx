@@ -7,23 +7,25 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddProductSchema } from "@/lib/validation";
 import InputImageField from "./InputImageField";
+import { editSettings } from "@/lib/apiCalls/adminAPIsCall";
 
-// interface EditProductFormProps {
-//     classes: string;
-//     img1: string;
-//     img2: string;
-//     img3: string;
-//     status: string;
-//     brand: string;
-//     model: string;
-//     year: string;
-//     kilometers: string;
-//     transmission: string;
-//     fuelType: string;
-//     engineSize: string;
-//     color: string;
-//     price: string;
-// }
+interface EditProductFormProps {
+    img1: string;
+    img2: string;
+    img3: string;
+    status: string;
+    brand: string;
+    model: string;
+    year: string;
+    kilometers: string;
+    transmission: string;
+    fuelType: string;
+    engineSize: string;
+    color: string;
+    price: string;
+    description: string;
+    city: string;
+}
 
 interface Props {
     classes: string;
@@ -47,7 +49,11 @@ type FormData = {
     description: string;
     city: string;
 }
-const EditProductForm = ({ classes, token }: Props) => {
+interface AllProps {
+    defaultValue: EditProductFormProps;
+    other: Props;
+}
+const EditProductForm = ({ other: { classes, token }, defaultValue }: AllProps) => {
 
     const { 
         register, 
@@ -56,12 +62,48 @@ const EditProductForm = ({ classes, token }: Props) => {
         // reset 
         watch
       } = useForm<FormData>({
-        resolver: zodResolver(AddProductSchema)
+        resolver: zodResolver(AddProductSchema),
+        defaultValues: {
+            brand: defaultValue.brand,
+            model: defaultValue.model,
+            price: defaultValue.price,
+            year: defaultValue.year,
+            color: defaultValue.color,
+            status: defaultValue.status,
+            kilometers: defaultValue.kilometers,
+            transmission: defaultValue.transmission,
+            fuelType: defaultValue.fuelType,
+            engineSize: defaultValue.engineSize,
+            description: defaultValue.description,
+            city: defaultValue.city,
+        }
       });
 
     const onSubmit = async (data: FormData) => {
         console.log(data, token);
+        const formData = new FormData();
 
+        if (data.img1?.[0])
+            formData.append("File1", data.img1[0])
+        if (data.img2?.[0])
+            formData.append("File2", data.img2[0])
+        if (data.img3?.[0])
+            formData.append("File3", data.img3[0])
+        formData.append("Brand", data.brand)
+        formData.append("Model", data.model)
+        formData.append("Price", data.price)
+        formData.append("Year", data.year)
+        formData.append("Status", data.status)
+        formData.append("Color", data.color)
+        formData.append("Kilomtrage", data.kilometers)
+        formData.append("Fuel", data.fuelType)
+        formData.append("Engine", data.engineSize)
+        formData.append("Transmission", data.transmission)
+        formData.append("City", data.city)
+        formData.append("Description", data.description)
+        
+        await editSettings(token, formData)
+        // window.location.reload()
     }
     
   return (

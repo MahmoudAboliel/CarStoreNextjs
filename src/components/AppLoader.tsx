@@ -1,7 +1,7 @@
 "use client"
 import { useSettingsStore } from "@/stores/useSettingStore"
 const AppLoader = () => {
-      const { loading } = useSettingsStore()
+      const loading = useSettingsStore(state => state.loading)
 
       if (!loading) return null
   return (

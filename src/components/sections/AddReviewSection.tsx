@@ -10,6 +10,7 @@ const AddReviewSection = ({ carId }: AddReviewSectionProps) => {
         <h2 className="font-semibold text-right text-2xl md:text-3xl mb-3">أترك تعليقاً</h2>
         <AddReviewForm 
             carId={carId}
+            classes="text-gray-700"
         />
     </div>
   );

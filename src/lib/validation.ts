@@ -10,11 +10,9 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const RegisterUserSchema = z.object({
     userName: z
-    .string({
-        required_error: "الاسم مطلوب"
-    })
+    .string()
     .min(3, "الاسم قصير جداً")
-    .max(30, "الاسم طويل جداً"),
+    .max(17, "الاسم طويل جداً"),
 
     email: z
     .string({
@@ -43,7 +41,7 @@ export const RegisterUserSchema = z.object({
     city: z
     .string({
         required_error: "المدينة مطلوبة"
-    }),
+    }).min(3, 'المدينة مطلوبة').max(17, 'طويلة جداً'),
 
     avatar: z
     .any()
@@ -62,7 +60,7 @@ export const EditProfileSchema = z.object({
         required_error: "الاسم مطلوب"
     })
     .min(3, "الاسم قصير جداً")
-    .max(30, "الاسم طويل جداً"),
+    .max(17, "الاسم طويل جداً"),
 
     email: z
     .string({
@@ -77,7 +75,7 @@ export const EditProfileSchema = z.object({
     city: z
     .string({
         required_error: "المدينة مطلوبة"
-    }),
+    }).min(3, 'المدينة مطلوبة').max(17, 'طويلة جداً'),
 
     avatar: z
     .any()
@@ -129,18 +127,18 @@ export const EditSettingsSchema = z.object({
     facebook: z
     .string({
         required_error: "facebook مطلوب"
-    }),
+    }).url(),
     instagram: z
     .string({
         required_error: "instagram مطلوب"
-    }),
+    }).url(),
     whatsapp: z
     .string({
         required_error: "whatsapp مطلوب"
-    }),
+    }).url(),
 
     logo: z
-    .any()
+    .any().optional()
     .refine((files) => files?.length === 1, "صورة الشعار مطلوبة")
     .refine((files) => files?.[0]?.size <= 5_000_000, "5MB الحجم الاعظمي")
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), "image/jpeg, image/jpg, image/png, image/webp"),
@@ -261,7 +259,7 @@ export const AddProductSchema = z.object({
 export const AddReviewSchema = z.object({
     userName: z
     .string({required_error: "الاسم مطلوب"})
-    .min(3),
+    .min(3, 'قصير جداً'),
 
     phoneNumber: z
     .string({ required_error: "رقم الهاتف مطلوب"})
@@ -269,7 +267,7 @@ export const AddReviewSchema = z.object({
 
     content: z
     .string({ required_error: "المحتوى مطلوب"})
-    .min(5),
+    .min(1, 'المحتوى مطلوب'),
 
 });
 

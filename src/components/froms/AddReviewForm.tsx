@@ -8,17 +8,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { addReview } from "@/lib/apiCalls/PublicAPIsCall";
+import Textarea from "./Textarea";
 
 type FormData = {
     userName: string;
     content: string;
     phoneNumber: string;
 }
-interface AddReviewForm {
+interface Props {
     carId: number;
+    classes?: string;
 }
 
-const AddReviewForm = ({ carId }: AddReviewForm) => {
+const AddReviewForm = ({ carId, classes }: Props) => {
 
     // const router = useRouter();
     const [stars, setStars] = useState(1);
@@ -34,21 +36,19 @@ const AddReviewForm = ({ carId }: AddReviewForm) => {
 
     
     const onSubmit = async (data: FormData) => { 
-       
-         await addReview(data.userName, data.phoneNumber, data.content, stars, carId)
-        
+        await addReview(data.userName, data.phoneNumber, data.content, stars, carId)
     }   
 
   return (
     <form 
-        className="flex flex-col gap-4 w-full text-right"
+        className={`${classes} flex flex-col gap-4 w-full text-right`}
         onSubmit={handleSubmit(onSubmit)}
         noValidate>
         <div>
             <label className="text-sm text-gray-600 ">تقييمك</label>
             <div className="flex gap-2 items-center justify-end my-2">
                 {[...Array(5)].map((_, index) => 
-                <button key={index}
+                <button type="button" key={index}
                     onClick={() => setStars(index + 1)}
                 >
                     <IoStarSharp 
@@ -72,10 +72,9 @@ const AddReviewForm = ({ carId }: AddReviewForm) => {
             register={register}
             error={errors.phoneNumber}
         />
-        <InputField 
+        <Textarea 
             label="المحتوى"
             id="content"
-            type="text"
             register={register}
             error={errors.content}
         />

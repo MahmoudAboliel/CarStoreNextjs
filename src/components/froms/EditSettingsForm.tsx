@@ -3,187 +3,211 @@
 import InputField from "@/components/froms/InputField";
 import Button from "@/components/Button";
 import { IoSend } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import InputImageField from "./InputImageField";
-import { EditSettingsSchema } from "@/lib/validation";
+import InputImageField2 from "./InputImageField2";
+// import { EditSettingsSchema } from "@/lib/validation";
 import { editSettings } from "@/lib/apiCalls/adminAPIsCall"
-import { useRouter } from "next/navigation";
+import Textarea from "./Textarea";
+import Image from "next/image";
+import { useSettingsStore } from "@/stores/useSettingStore";
+import { DOMAINImage } from "@/lib/constance";
+import { useState } from "react";
 
-type FormData = {
-  siteName: string;
-  logo?: FileList;
-  favicon?: FileList;
-  img1?: FileList;
-  img2?: FileList;
-  img3?: FileList;
-  text1: string;
-  text2: string;
-  text3: string;
-  facebook: string;
-  instagram: string;
-  whatsapp: string;
-  description: string;
-};
+const EditSettingsForm = ({ token }: { token: string }) => {
 
-const EditSettingsForm = ({ token }: { token: string}) => {
-
-const router = useRouter()
-
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors, isSubmitting },
-    watch,
-    // setValue,
-    // reset 
-  } = useForm<FormData>({
-    resolver: zodResolver(EditSettingsSchema)
-  });
+  const settings = useSettingsStore(state => state.settings)
+  
+  const [logo, setLogo] = useState<File | null>(null)
+  const [favicon, setFavicon] = useState<File | null>(null)
+  const [img1, setImg1] = useState<File | null>(null)
+  const [img2, setImg2] = useState<File | null>(null)
+  const [img3, setImg3] = useState<File | null>(null)
+  const [siteName, setSiteName] = useState(settings?.siteName)
+  const [description, setDescription] = useState(settings?.description)
+  const [text1, setText1] = useState(settings?.homeTxt1)
+  const [text2, setText2] = useState(settings?.homeTxt2)
+  const [text3, setText3] = useState(settings?.homeTxt3)
+  const [facebook, setFacebook] = useState(settings?.facebook)
+  const [instagram, setInstagram] = useState(settings?.instagram)
+  const [whatsapp, setWhatsapp] = useState(settings?.whatsapp)
+  
 
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     const formData = new FormData();
-    if (data.logo?.[0])
-      formData.append("Logo", data.logo[0])
-    if (data.favicon?.[0])
-      formData.append("favicon", data.favicon[0])
-    if (data.img1?.[0])
-      formData.append("HomeImg1", data.img1[0])
-    if (data.img2?.[0])
-      formData.append("HomeImg2", data.img2[0])
-    if (data.img3?.[0])
-      formData.append("HomeImg3", data.img3[0])
-    formData.append("SiteName", data.siteName)
-    formData.append("Description", data.description)
-    formData.append("Facebook", data.facebook)
-    formData.append("Instagram", data.instagram)
-    formData.append("Whatsapp", data.whatsapp)
-    formData.append("HomeTxt1", data.text1)
-    formData.append("HomeTxt2", data.text2)
-    formData.append("HomeTxt3", data.text3)
-    console.log(data)
+    if (logo)
+      formData.append("Logo", logo)
+    if (favicon)
+      formData.append("favicon", favicon)
+    if (img1)
+      formData.append("HomeImg1", img1)
+    if (img2)
+      formData.append("HomeImg2", img2)
+    if (img3)
+      formData.append("HomeImg3", img3)
+    if (siteName)
+    formData.append("SiteName", siteName)
+    if (description)
+      formData.append("Description", description)
+    if (facebook)
+      formData.append("Facebook", facebook)
+    if (instagram)  
+      formData.append("Instagram", instagram)
+    if (whatsapp)
+      formData.append("Whatsapp", whatsapp)
+    if (text1)
+      formData.append("HomeTxt1", text1)
+    if (text2)
+      formData.append("HomeTxt2", text2)
+    if (text3)
+      formData.append("HomeTxt3", text3)
+    
     
     await editSettings(token, formData)
-    
-    router.refresh()
   }
+
+  const images = [
+    {
+      id: 1,
+      label: 'Logo',
+      href: `${DOMAINImage}/${settings?.logo}`
+    },
+    {
+      id: 2,
+      label: 'Favicon',
+      href: `${DOMAINImage}/${settings?.favicon}`
+    },
+    {
+      id: 3,
+      label: 'الصورة الأولى',
+      href: `${DOMAINImage}/${settings?.homeImg1}`
+    },
+    {
+      id: 4,
+      label: 'الصورة الثانية',
+      href: `${DOMAINImage}/${settings?.homeImg2}`
+    },
+    {
+      id: 5,
+      label: 'الصورة الثالثة',
+      href: `${DOMAINImage}/${settings?.homeImg3}`
+    },
+  ]
 
   return (
     <form 
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-end gap-4 w-full"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate>
-
+        onSubmit={onSubmit}
+        >
+          <div className="col-span-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch spce-y-3">
+              {images.map(img => 
+              <div key={img.id}>
+                <label htmlFor="">{img.label}</label>
+                <Image className=" rounded-lg" width={250} height={250} src={img.href} alt="الصورة الأولى" />
+                
+              </div>
+              )}
+            </div>
+          </div>
         {/*  */}
         <div className="col-span-full">  
           <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 w-full">
-            <InputImageField 
+            
+            <InputImageField2 
               label="Logo"
               id="logo"
-              register={register}
-              error={errors.logo}
-              watch={watch}
+              onChange={setLogo}
             />
-            <InputImageField 
+            <InputImageField2 
               label="Favicon"
               id="favicon"
-              register={register}
-              error={errors.favicon}
-              watch={watch}
+              onChange={setFavicon}
             />
+            
           </div>
         </div>
         <div className="col-span-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 w-full">
-          <InputImageField 
-              label="Image One"
+            <InputImageField2 
+              label="الصورة الأولى"
               id="img1"
-              register={register}
-              error={errors.img1}
-              watch={watch}
+              onChange={setImg1}
             />
-          <InputImageField 
-              label="Image Two"
+            <InputImageField2 
+              label="الصورة الثانية"
               id="img2"
-              register={register}
-              error={errors.img2}
-              watch={watch}
+              onChange={setImg2}
             />
-          <InputImageField 
-              label="Image Three"
+            <InputImageField2 
+              label="الصورة الثالثة"
               id="img3"
-              register={register}
-              error={errors.img3}
-              watch={watch}
+              onChange={setImg3}
             />
           </div>
         </div>
         {/*  */}
 
+
         <InputField 
-            label="Site Name"
+            label="اسم الموقع"
             id="siteName"
             type="text"
-            register={register}
-            error={errors.siteName}
-        />
-        <InputField 
-            label="Hero Text One"
-            id="text1"
-            type="text"
-            register={register}
-            error={errors.text1}
-        />
-        <InputField 
-            label="Hero Text Two"
-            id="text2"
-            type="text"
-            register={register}
-            error={errors.text2}
-        />
-        <InputField 
-            label="Hero Text Three"
-            id="text3"
-            type="text"
-            register={register}
-            error={errors.text3}
+            value={siteName}
+            setValue={setSiteName}
         />
         <InputField 
             label="Facebook"
             id="facebook"
             type="text"
-            register={register}
-            error={errors.facebook}
+            value={facebook}
+            setValue={setFacebook}
         />
         <InputField 
             label="Instagram"
             id="instagram"
             type="text"
-            register={register}
-            error={errors.instagram}
+            value={instagram}
+            setValue={setInstagram}
         />
         <InputField 
             label="Whatsapp"
             id="whatsapp"
             type="text"
-            register={register}
-            error={errors.whatsapp}
+            value={whatsapp}
+            setValue={setWhatsapp}
         />
-        <InputField 
-            label="الوصف"
-            id="description"
-            type="text"
-            register={register}
-            error={errors.description}
-        />
-        
+        <div className="col-span-full">
+          <Textarea 
+            label="النص الأول"
+            id="text1"
+            value={text1}
+            setValue={setText1}
+          />
+          <Textarea 
+            label="النص الثاني"
+            id="text2"
+            value={text2}
+            setValue={setText2}
+          />
+          <Textarea 
+            label="النص الثالث"
+            id="text3"
+            value={text3}
+            setValue={setText3}
+          />
+          <Textarea 
+              label="الوصف"
+              id="description"
+              value={description}
+              setValue={setDescription}
+          />
+        </div>
         <Button 
-            text="Edit"
+            text="تعديل"
             type="submit"
             Icon={IoSend}
             reverse
-            disabled={isSubmitting}
         />
     </form>
   );

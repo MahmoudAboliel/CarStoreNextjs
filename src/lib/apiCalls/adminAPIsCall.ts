@@ -414,6 +414,7 @@ export async function editSettings(token: string, formData: FormData) {
         }
         
         toast.success("تم تعديل الإعدادات بنجاح")
+        window.location.reload()
     } catch (error) {
         console.log(error)
     }

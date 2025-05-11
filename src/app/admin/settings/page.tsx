@@ -3,14 +3,16 @@ import SectionHeader from "@/components/sections/SectionHeader"
 import { cookies } from "next/headers"
 
 const SettingsPage = async () => {
+
   const token = (await cookies()).get('token')?.value || ''
   return (
     <section>
         <SectionHeader 
-            subtitle="Admin"
-            title="Dashboard"
-            span="Settings"
+            subtitle="المسؤول"
+            title="لوحة التحكم"
+            span="الإعدادات"
         />
+      
         <EditSettingsForm token={token} />
     </section>
   )

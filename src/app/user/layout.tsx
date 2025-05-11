@@ -26,6 +26,7 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
             <section className="container mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 items-stretch">
                     <Sidebar 
+                        role="user"
                         classes="lg:col-span-2" 
                     />
                     <div className="lg:col-span-4 shadow-type1 bg-white rounded-3xl p-5 md:p-7">

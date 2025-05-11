@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SettingsApiResponse } from "@/lib/Dto"
 
-type State = {
+export type State = {
     settings: SettingsApiResponse['data'] | null;
     setSettings: (s: SettingsApiResponse['data']) => void;
     loading: boolean;

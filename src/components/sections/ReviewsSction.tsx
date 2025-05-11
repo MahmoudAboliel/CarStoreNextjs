@@ -6,6 +6,7 @@ import { IoArrowForward, IoArrowBack } from '@/lib/utils';
 import SectionHeader from '@/components/sections/SectionHeader';
 import { Reviews } from '@/lib/Dto';
 import { fetchReviews } from '@/lib/apiCalls/PublicAPIsCall';
+import { interval } from '@/lib/constance';
 
 const ReviewsSection = () => {
 
@@ -20,8 +21,8 @@ const ReviewsSection = () => {
         getReviews()
       }, [])
 
-    const interval = 3000;
     const [currentIndex, setCurrentIndex] = useState(0);
+    // const [isPaused, setIsPaused] = useState(false);
 
     const nextIndex = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % reviews.length)
@@ -40,9 +41,10 @@ const ReviewsSection = () => {
 
         const timer = setInterval(nextIndex, interval);
         return () => clearInterval(timer);
-    }, [currentIndex, interval, nextIndex]);
+    }, [currentIndex, nextIndex]);
 
     return (
+        reviews.length !== 0 &&
         <section className="py-16 w-full bg-white">
             <div className="container mx-auto px-4">
                 <SectionHeader 
@@ -51,7 +53,10 @@ const ReviewsSection = () => {
                     span={"يقولون"}
                 />
             
-                <div className="flex gap-2 py-2 overflow-hidden">
+                <div className="flex gap-2 py-2 overflow-hidden"
+                    // onMouseEnter={() => setIsPaused(true)}
+                    // onMouseLeave={() => setIsPaused(false)}
+                >
                     {reviews.map((review) => (
                     <div
                         className="transition-transform duration-500 ease-in-out"
@@ -71,14 +76,14 @@ const ReviewsSection = () => {
                 {/* Navigation Arrows */}
                 <button 
                     onClick={prevIndex}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
                     aria-label="Previous slide"
                 >
                     <IoArrowBack />
                 </button>
                 <button 
                     onClick={nextIndex}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
                     aria-label="Next slide"
                 >
                     <IoArrowForward />

@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { IoMenu, IoClose } from "@/lib/utils";
-import { DOMAINImage, mainLinks } from "@/lib/constance";
+import { mainLinks } from "@/lib/constance";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { getCookie } from "cookies-next";
@@ -13,6 +12,7 @@ import Logout from "@/components/Logout";
 import { fetchSettings } from "@/lib/apiCalls/PublicAPIsCall";
 import { fetchProfile } from "@/lib/apiCalls/authAPIsCall";
 import { useUserStore } from "@/stores/useUserStore";
+import Logo from "@/components/Logo";
 
 const Header = () => {
 
@@ -99,17 +99,7 @@ const Header = () => {
       className="fixed top-0 left-0 right-0 z-50 h-[66px] bg-cc-white shadow-type1 px-4 py-3">
       <div className="container mx-auto flex items-center justify-between">
         
-        {/* Logo */}
-        <Link href="/"
-          className="flex items-center gap-2">
-          <Image 
-            width={100}
-            height={100}
-            className="w-[55px!important] h-[40px] rounded-lg"
-            src={`${DOMAINImage}/${settings?.logo}`} alt="logo" />
-          <span className="text-large1 text-cc-red uppercase font-bold">{settings?.siteName}</span>
-          
-        </Link>
+      <Logo logo={settings?.logo || ''} siteName={settings?.siteName || ''} />
         
         {/* Main Navbar */}
         <nav className="hidden md:flex items-center gap-3 text-gray-900">

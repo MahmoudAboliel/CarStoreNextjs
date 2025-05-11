@@ -1,9 +1,6 @@
 
-import SidebarAdmin from "@/components/sections/SidebarAdmin";
+import Sidebar from "@/components/sections/Sidebar";
 import type { Metadata } from "next";
-// import { profileLinks } from "@/lib/utils";
-// import { getProfileInfo } from "@/lib/apiCalls/authApiCalls";
-// import { ProfileInfoApiResponse } from "@/lib/Dto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -30,7 +27,8 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
         <main className="overflow-hidden min-h-screen p-7">
             <section className="container mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 items-stretch">
-                    <SidebarAdmin 
+                    <Sidebar 
+                        role="admin"
                         classes="lg:col-span-2" 
                     />
                     <div className="lg:col-span-4 shadow-type1 bg-white rounded-3xl p-5 md:p-7">

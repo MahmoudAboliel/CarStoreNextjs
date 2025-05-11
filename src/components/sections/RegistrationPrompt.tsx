@@ -1,7 +1,12 @@
-import Link from "next/link";
-import { IoCarSport, IoArrowForward } from "@/lib/utils";
+import { IoCarSport } from "@/lib/utils"
+import { cookies } from "next/headers"
+import AwesomeLink from "../AwesomeLink"
 
-const RegistrationPrompt = () => {
+const RegistrationPrompt = async () => {
+
+  const token = (await cookies()).get('token')?.value
+  const link = token ? '/user/addProduct' : '/login'
+
   return (
     <div 
       className="relative p-8 md:p-12 shadow-type1 overflow-hidden bg-cc-white">
@@ -41,16 +46,7 @@ const RegistrationPrompt = () => {
         سجّل الآن واعرض سيارتك في دقائق
         </p>
 
-        <div className="hover:scale-102 active:scale-98 transition-transform duration-300">
-          <Link
-            href="/register"
-            className="inline-flex items-center justify-center bg-cc-red shadow-md shadow-cc-red px-6 py-2 md:px-8 md:py-3 rounded-full font-bold text-white transition-all duration-300 group">
-            <span className="inline-flex items-center group-hover:translate-x-1 transition-transform duration-300">
-              إبدأ الآن
-              <IoArrowForward className="ml-3 group-hover:translate-x-1 transition-transform duration-300" />
-            </span>
-          </Link>
-        </div>
+        <AwesomeLink link={link} />
       </div>
 
       {/* Floating Cars Animation */}

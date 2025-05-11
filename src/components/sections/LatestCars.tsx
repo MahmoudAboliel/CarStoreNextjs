@@ -6,7 +6,8 @@ import CarCard from "@/components/cards/CarCard";
 import { CarCardProps } from "@/lib/types";
 import { transformData } from "@/lib/functions";
 import { fetchLatestProducts } from "@/lib/apiCalls/PublicAPIsCall";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import AwesomeLink from "@/components/AwesomeLink";
 
 const LatestCars = () => {
 
@@ -24,62 +25,32 @@ const LatestCars = () => {
         getData()
     }, [])
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const interval = 3000;
-
-    // Moving slides
-    const nextIndex = useCallback(() => {
-        setCurrentIndex((prev) => (prev + 1) % data.length)
-    }, [data.length]);
-
-    // const prevIndex = () => {
-    //     setCurrentIndex((prev) => (prev - 1 + data.length) % data.length);
-    // };
-
-    // const goToIndex = (index: number) => {
-    //     setCurrentIndex(index);
-    // };
-
-    useEffect(() => {
-        // if (isPaused) return;
-
-        const timer = setInterval(nextIndex, interval);
-        return () => clearInterval(timer);
-    }, [currentIndex, interval, nextIndex]);
-    
-
   return (
     <section className="bg-cc-white w-full p-6">
-        <div className="container mx-auto">
+        <div className="container mx-auto text-center">
             <FilterForm 
                 classes="relative -top-15"
             />
             <SectionHeader 
-                subtitle="New arrivals"
-                title="Let's check latest"
-                span="cars"
+                subtitle="المنتجات"
+                title="تحقق من أحدث"
+                span="السيارات"
             />
-            <div className="flex gap-2 mt-20 py-2 overflow-hidden">
+            <div className="my-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {data.map((car) => (
-                    <div 
-                        className="transition-transform duration-500 ease-in-out"
-                        key={car.id}
-                        style={{
-                        transform: `translateX(calc(-${(currentIndex * 100)}% - ${currentIndex * 8}px))`
-                        }}>
-                        <CarCard 
-                            isLine
-                            id={car.id}
-                            imageUrl={car.imageUrl}
-                            brand={car.brand}
-                            price={car.price}
-                            isNew={car.isNew}
-                            attributes={car.attributes}
-                            detailsLink={car.detailsLink}
-                        />
-                    </div>
+                    <CarCard 
+                        id={car.id}
+                        key={car.id} 
+                        brand={car.brand}
+                        price={car.price}
+                        isNew={car.isNew}
+                        attributes={car.attributes}
+                        detailsLink={car.detailsLink}
+                        imageUrl={car.imageUrl}
+                    />
                 ))}
             </div>
+            <AwesomeLink link="/product" />
         </div>
     </section>
   );

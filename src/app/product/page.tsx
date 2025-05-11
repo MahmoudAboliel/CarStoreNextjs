@@ -15,7 +15,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
     const { pageNumber } = await searchParams;
 
     
-    const products = await fetchProducts(pageNumber)
+    const products = await fetchProducts(pageNumber || '1')
     const count = await fetchProductsCount()
     const pages:number = Math.ceil(count / ARTICLE_PER_PAGE);
     console.log(products, count)
@@ -27,7 +27,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
   return (
     count === 0 
     ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full min-h-screen flex items-center justify-center">
             <h1 className="font-bold text-5xl">لا يوجد سيارات حالياً</h1>
         </div>
     ) 
@@ -35,9 +35,9 @@ const ProductsPage = async ({ searchParams }: Props) => {
         <section className=" w-full p-6">
             <div className="container mx-auto">
                 <SectionHeader 
-                    subtitle="New arrivals"
-                    title="Let's check best"
-                    span="cars"
+                    subtitle="المنتجات"
+                    title="شاهد أحدث"
+                    span="السيارات"
                 />
             
                 <div className="my-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -56,7 +56,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
                 </div>
 
                 <Pagination 
-                    pageNumber={parseInt(pageNumber)}
+                    pageNumber={parseInt(pageNumber || '1')}
                     pages={pages}
                     route="/product"
                 />

@@ -3,10 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import AdCard from "@/components/cards/AdCard";
 import SectionHeader from "@/components/sections/SectionHeader";
-// import CustomLink from "@/components/CustomLink";
 import { IoArrowForward, IoArrowBack } from "@/lib/utils";
 import { fetchAds } from "@/lib/apiCalls/PublicAPIsCall";
 import { Ad } from "@/lib/Dto"; 
+import { interval } from "@/lib/constance";
 
 const AdsSection = () => {
 
@@ -21,7 +21,7 @@ const AdsSection = () => {
   }, [])
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const interval = 3000;
+  // const [isPaused, setIsPaused] = useState(false);
 
   // Moving slides
   const nextIndex = useCallback(() => {
@@ -41,9 +41,10 @@ const AdsSection = () => {
 
       const timer = setInterval(nextIndex, interval);
       return () => clearInterval(timer);
-  }, [currentIndex, interval, nextIndex]);
+  }, [currentIndex, nextIndex]);
 
   return (
+    ads.length !== 0 &&
     <section className="relative py-5 bg-cc-bg-light shadow-type1 group">
       <div className="container mx-auto px-4">
         
@@ -59,7 +60,9 @@ const AdsSection = () => {
             ) 
           : (
             <>
-              <div className="flex gap-2 mt-20 py-2 overflow-hidden">
+              <div className="flex gap-2 mt-20 py-2 overflow-hidden"
+               
+              >
                 {ads.map((ad) => (
                   <div
                     className="transition-transform duration-500 ease-in-out"
@@ -75,19 +78,20 @@ const AdsSection = () => {
                 ))}
               </div>
 
+              {/* Navigation Arrows */}
               <button 
-                onClick={prevIndex}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
-                aria-label="Previous slide"
-                >
-                <IoArrowBack />
+                  onClick={prevIndex}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
+                  aria-label="Previous slide"
+              >
+                  <IoArrowBack />
               </button>
               <button 
-                onClick={nextIndex}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
-                aria-label="Next slide"
-                >
-                <IoArrowForward />
+                  onClick={nextIndex}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
+                  aria-label="Next slide"
+              >
+                  <IoArrowForward />
               </button>
               {/* زر عرض المزيد */}
               {/* <CustomLink 

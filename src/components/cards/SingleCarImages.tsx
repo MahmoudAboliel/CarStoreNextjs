@@ -22,7 +22,7 @@ const SingleCarImages = ({ images }: SingleCarImagesProps) => {
                 {images.map(img => (
                 <div
                     key={img.id}
-                    className="w-full h-70 flex-shrink-0 md:h-80 transition-transform duration-300"
+                    className="w-full h-80 flex-shrink-0 md:h-100 transition-transform duration-300"
                     style={{
                     transform: `translateX(${currentIndex * -100}%)`
                     }}

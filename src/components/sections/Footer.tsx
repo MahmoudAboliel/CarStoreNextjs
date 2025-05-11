@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { IoLogoFacebook, IoLogoWhatsapp, IoLogoInstagram, MdArrowRight, IoSend } from "@/lib/utils";
-import { DOMAINImage, mainLinks } from "@/lib/constance";
-import Button from "../Button";
+import { IoLogoFacebook, IoLogoWhatsapp, IoLogoInstagram, MdArrowRight } from "@/lib/utils";
+import { mainLinks } from "@/lib/constance";
 import { usePathname } from "next/navigation";
 import { useSettingsStore } from "@/stores/useSettingStore";
+import AddPublicReviewForm from "../froms/AddPublicReviewForm";
+import Logo from "@/components/Logo";
 
 
 const Footer = () => {
@@ -42,17 +42,7 @@ const Footer = () => {
         <div className="p-5 md:p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"> 
           {/* first column */}
           <div className="space-y-3">
-            {/* logo */}
-            <Link href="/"
-              className="flex items-center gap-2">
-              <Image 
-                width={100}
-                height={100}
-                className="w-[100px!important] h-[50px] rounded-lg"
-                src={`${DOMAINImage}/${settings?.logo}`} alt="logo" />
-              <span className="text-large1 text-cc-red uppercase font-bold">{settings?.siteName}</span>
-            </Link>
-
+            <Logo logo={settings?.logo || ''} siteName={settings?.siteName || ''} />
             <p className="text-right">{settings?.description}</p>
 
             <div className="text-medium1 flex flex-col gap-3 my-4">
@@ -84,17 +74,9 @@ const Footer = () => {
           </div>
           {/* third column */}
           <div>
-            <Subtitle title="أحدث الأخبار" />
-            <p>اشترك في النشرة الإخبارية لدينا للحصول على آخر التحديثات والأخبار</p>
-            <form className="mt-4 space-y-4" action="">
-              <input 
-                className="outline-none bg-cc-white p-3 text-gray-900 text-medium1 rounded-2xl md:w-full"
-                type="email" 
-                placeholder="الإيميل"
-                // value={''}
-              />
-              <Button text="اشترك الآن" Icon={IoSend} reverse classes="hover:bg-cc-white hover:text-cc-red rounded-full" />
-            </form>
+            <Subtitle title="أترك تعليقاً" />
+            <p>قم بتقييم الموقع</p>
+            <AddPublicReviewForm />
           </div>
 
         </div>

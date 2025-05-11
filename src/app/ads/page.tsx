@@ -4,7 +4,7 @@
 // import AdCard from "@/components/cards/AdCard";
 // import SectionHeader from "@/components/sections/SectionHeader";
 // import CustomLink from "@/components/CustomLink";
-// import { categories, adsData } from "@/lib/utils";
+// import { categories, adsData } from "@/lib/constance";
 
 const AdsPage = () => {
   // const [activeCategory, setActiveCategory] = useState("all");

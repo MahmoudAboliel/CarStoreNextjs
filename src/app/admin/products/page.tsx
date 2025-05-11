@@ -65,9 +65,9 @@ const ProductsPage = async ({ searchParams }: Props) => {
                         key={car.id}>
                             <td className="py-1">
                                 <Image 
-                                    className="w-14 h-14 rounded-lg"
-                                    width={900}
-                                    height={700}
+                                    className="w-20 h-18 rounded-lg"
+                                    width={80}
+                                    height={18}
                                     priority
                                     src={`${DOMAINImage}/${car.img1}`} 
                                     alt="car image" />

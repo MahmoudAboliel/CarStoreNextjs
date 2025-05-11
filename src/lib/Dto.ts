@@ -55,7 +55,21 @@ export type ProductsApiResponse = {
     data: Car[];
     errorMessage: string | null;
     status: number;
-  }
+}
+export type ProductsUserApiResponse = {
+    data: {
+        cars: Car[];
+        user: {
+            id: string;
+            name: string;
+            picture: string;
+            phone: string;
+            city: string;
+        };
+    };
+    errorMessage: string | null;
+    status: number;
+}
   
 export type CountApiResponse = {
     data: number;

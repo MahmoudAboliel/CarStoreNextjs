@@ -58,7 +58,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
             />
         </div>
         <div className="overflow-x-auto ">
-            <table className="w-full min-w-[900px] my-5 text-left border-spacing-0">
+            <table className="w-full min-w-[1100px] my-5 text-left border-spacing-0">
                 <thead className=" border-y border-gray-400 bg-gray-200">
                     <tr className="">
                     {reviewsFields.map(title => 
@@ -95,7 +95,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
                                     border rounded-md font-semibold px-2 py-1
                                 `}>
                                 {review.isPublic === 'OnHold' 
-                                    ? 'قيد الإنتظار' 
+                                    ? 'معلق' 
                                     : review.isPublic === 'Approved'
                                     ? 'مقبول'
                                     : 'مرفوض'
@@ -106,23 +106,29 @@ const ProductsPage = async ({ searchParams }: Props) => {
                         <td className="p-1">{review.userName}</td>
                         <td className="p-1">
                             <div className="flex items-center gap-1 justify-center text-xl">
-                                <Link 
-                                    href={`/product/${review.carId}`}
-                                    className="text-gray-600 border rounded-md p-1 hover:bg-gray-600/20 transition-colors duration-150">
-                                    <FaEye />
-                                </Link>
-                                <form action={accepted}>
-                                    <input hidden readOnly type="number" name="id" value={review.id} />
-                                    <button className="cursor-pointer text-green-600 border rounded-md p-1 hover:bg-green-600/20 transition-colors duration-150">
-                                        <BiCommentCheck />
-                                    </button>
-                                </form>
-                                <form action={deleted}>
-                                    <input hidden readOnly type="number" name="id" value={review.id} />
-                                    <button className="cursor-pointer text-red-600 border rounded-md p-1 hover:bg-red-600/20 transition-colors duration-150">
-                                        <FaTrashAlt />
-                                    </button>
-                                </form>
+                                {review.carId !== 0 && 
+                                    <Link 
+                                        href={`/product/${review.carId}`}
+                                        className="text-gray-600 border rounded-md p-1 hover:bg-gray-600/20 transition-colors duration-150">
+                                        <FaEye />
+                                    </Link>
+                                }
+                                {review.isPublic === 'OnHold' && 
+                                    <>
+                                        <form action={accepted}>
+                                            <input hidden readOnly type="number" name="id" value={review.id} />
+                                            <button className="cursor-pointer text-green-600 border rounded-md p-1 hover:bg-green-600/20 transition-colors duration-150">
+                                                <BiCommentCheck />
+                                            </button>
+                                        </form>
+                                        <form action={deleted}>
+                                            <input hidden readOnly type="number" name="id" value={review.id} />
+                                            <button className="cursor-pointer text-red-600 border rounded-md p-1 hover:bg-red-600/20 transition-colors duration-150">
+                                                <FaTrashAlt />
+                                            </button>
+                                        </form>
+                                    </>
+                                }
                             </div>
                         </td>
                     </tr>

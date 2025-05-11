@@ -35,7 +35,7 @@ const InputField = ({ label, id, type = "text", accept, defaultValue, register, 
                 accept={accept}
                 id={id} 
                 defaultValue={defaultValue}
-                
+                value={value}
                 {...register(id, {validate})}
                 placeholder={label}
               />
@@ -54,7 +54,7 @@ const InputField = ({ label, id, type = "text", accept, defaultValue, register, 
               />}
           {type === 'password' && (
             <button
-              className="absolute right-3 top-1/2 outline-none -translate-y-1/2 text-gray-600 text-xl"
+              className="absolute left-3 top-1/2 outline-none -translate-y-1/2 text-gray-600 text-xl"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword 

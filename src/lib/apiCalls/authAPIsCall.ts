@@ -34,6 +34,7 @@ export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:
     toast.success("تم إنشاء الحساب بنجاح");
     reset()
     refersh()
+    window.location.reload()
     push('/')
   
   } catch (error) {
@@ -80,6 +81,7 @@ export const loginFunc = async (Email:string, Password:string, reset:()=>void, p
     })
 
     reset()
+    window.location.reload()
     refresh()
     push('/')
     toast.success("تسجيل الدخول بنجاح")
@@ -130,6 +132,7 @@ export const editProfile = async (formData:FormData, token: string) => {
       `${DOMAIN}/Account/EditProfile`, {
         method: 'POST',
         cache: 'no-store',
+        body: formData,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -147,8 +150,8 @@ export const editProfile = async (formData:FormData, token: string) => {
       console.log(response.errorMessage)
     }
     
-    toast.error(response.data)
-    return response.data
+    toast.success(response.data)
+    window.location.reload()
     
   } catch (error) {
     console.log(error)

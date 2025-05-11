@@ -1,108 +1,104 @@
 "use client"; 
 
-import InputField from "@/components/froms/InputField";
-import Button from "@/components/Button";
-import { IoSend } from "@/lib/utils";
-import { EditProfileSchema } from "@/lib/validation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import InputImageField from "./InputImageField";
-import { editProfile, fetchProfile } from "@/lib/apiCalls/authAPIsCall";
-import { getCookie } from "cookies-next";
+import InputField from "@/components/froms/InputField"
+import Button from "@/components/Button"
+import { IoSend } from "@/lib/utils"
+import { editProfile } from "@/lib/apiCalls/authAPIsCall"
+import { useUserStore } from "@/stores/useUserStore"
+import { useState } from "react"
+import InputImageField2 from "./InputImageField2"
+import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
-type FormData = {
-  userName: string;
-  email: string;
-  number: string;
-  city: string;
-  avatar?: FileList;
-};
 
 interface EditProfileFormProps {
-    classes?: string
+    classes?: string;
+    token: string;
 }
-const EditProfileForm = ({ classes }: EditProfileFormProps) => {
+const EditProfileForm = ({ classes, token }: EditProfileFormProps) => {
+  const router = useRouter()
+  const user = useUserStore(state => state.user)
 
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors, isSubmitting },
-    // setValue,
-    watch,
-  } = useForm<FormData>({
-    resolver: zodResolver(EditProfileSchema)
-  });
+    const [img, setImg] = useState<File | null>(null)
+    const [userName, setUserName] = useState(user?.fullName)
+    const [email, setEmail] = useState(user?.email)
+    const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber)
+    const [city, setCity] = useState(user?.city)
+
+  
 
 
-  const onSubmit = async (data: Omit<FormData, "confirmPassword">) => {
-    const token = getCookie('token')?.toString() || ''
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!token || token === '') {
+      toast.error('يرجى تسجيل الدخول')
+      router.replace('/login')
+    }
 
-    console.log(token);
-          const formData = new FormData();
-          
-          formData.append("Name", data.userName);
-          formData.append("Email", data.email);
-          formData.append("City", data.city);
-          formData.append("Number", data.number);
-          if (data.avatar?.[0])
-            formData.append('File1', data.avatar[0])
-          
-          await editProfile(formData, token)
-          await fetchProfile(token)
-          
-  }
+    const formData = new FormData()
+    if (img)
+      formData.append("File1", img)
+    if (userName)
+      formData.append("Name", userName)
+    if (email)
+      formData.append("Email", email)
+    if (city)
+      formData.append("City", city)
+    if (phoneNumber)
+      formData.append("Number", phoneNumber)
+    
+    await editProfile(formData, token)
+    
+}
 
 
   return (
     <div className={`${classes} `}>
         <form 
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-end gap-4 w-full "
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate>
-          
-          <InputImageField 
+          onSubmit={onSubmit}
+        >
+          <InputImageField2 
             label="الصورة الشخصية"
-            id="avatar"
-            register={register}
-            error={errors.avatar}
-            watch={watch}
+            id="img"
+            onChange={setImg}
           />
+          
           <InputField 
               label="الاسم الكامل"
               id="userName"
               type="text"
-              register={register}
-              error={errors.userName}
+              value={userName}
+             setValue={setUserName}
           />
           <InputField 
-              label="الإيميل"
-              id="email"
-              type="email"
-              register={register}
-              error={errors.email}
+            label="الإيميل"
+            id="email"
+            type="email"
+            value={email}
+            setValue={setEmail}
           />
           
           <InputField 
               label="رقم الهاتف"
               id="number"
               type="text"
-              register={register}
-              error={errors.number}
+              value={phoneNumber}
+             setValue={setPhoneNumber}
           />
 
           <InputField 
               label="المدينة"
               id="city"
               type="text"
-              register={register}
-              error={errors.city}
+              value={city}
+             setValue={setCity}
           />
           <Button 
               text="حفظ"
               type="submit"
               Icon={IoSend}
               reverse
-              disabled={isSubmitting}
           />
         </form>
 

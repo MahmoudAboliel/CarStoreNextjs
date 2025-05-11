@@ -11,21 +11,29 @@ const EditProduct = () => {
                 span="تعديل المنتج"
             />
             <EditProductForm 
-              classes="relative" 
-              token="asdf"
-              // img1={""} 
-              // img2={""} 
-              // img3={""} 
-              // status={""} 
-              // brand={""} 
-              // model={""} 
-              // year={""} 
-              // kilometers={""} 
-              // transmission={""} 
-              // fuelType={""} 
-              // engineSize={""} 
-              // color={""} 
-              // price={""}
+              defaultValue={{
+                img1: "",
+                img2: "",
+                img3: "",
+                brand: "",
+                model: "",
+                year: "",
+                price: "",
+                status: "",
+                description: "",
+                kilometers: '',
+                transmission: '',
+                fuelType: '',
+                engineSize: '',
+                color: '',
+                city: ''
+
+              }} 
+              other={{
+                classes: 'relative',
+                token: ''
+              }}              
+              
             />
         </div>
     </section>

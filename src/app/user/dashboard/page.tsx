@@ -104,7 +104,7 @@ const Dashboard = async ({ searchParams }: Props) => {
                                 </Link>
                                 <Link 
                                     href={`/user/editProduct?productId=${car.id}`}
-                                    className="text-green-600 border rounded-md p-1 hover:bg-green-600/20 transition-colors duration-150">
+                                    className="hidden text-green-600 border rounded-md p-1 hover:bg-green-600/20 transition-colors duration-150">
                                     <MdEdit />
                                 </Link>
                                 <form action={sold}>

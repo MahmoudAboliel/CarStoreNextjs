@@ -1,8 +1,9 @@
 import EditProfileForm from "@/components/froms/EditProfileForm";
 import SectionHeader from "@/components/sections/SectionHeader";
+import { cookies } from "next/headers";
 
-const ProfilePage = () => {
-    
+const ProfilePage = async () => {
+    const token = (await cookies()).get('token')?.value || ''
 
   return (
     <section>
@@ -13,6 +14,7 @@ const ProfilePage = () => {
       />
       <EditProfileForm 
         classes=""
+        token={token}
       />
     </section>
   );

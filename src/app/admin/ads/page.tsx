@@ -47,7 +47,7 @@ const AdsPage = async ({ searchParams }: Props) => {
             />
         </div>
         <div className="overflow-x-auto ">
-            <table className="w-full min-w-[700px] my-5 text-left border-spacing-0">
+            <table className="w-full min-w-[900px] my-5 text-left border-spacing-0">
                 <thead className=" border-y border-gray-400 bg-gray-200">
                     <tr className="">
                     {adsFields.map(title => 

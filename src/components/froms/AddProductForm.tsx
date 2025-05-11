@@ -37,7 +37,7 @@ const AddProductForm = ({ classes, token }: Props) => {
         register, 
         handleSubmit, 
         formState: { errors, isSubmitting },
-        // reset 
+        reset,
         watch
       } = useForm<FormData>({
         resolver: zodResolver(AddProductSchema)
@@ -66,7 +66,7 @@ const AddProductForm = ({ classes, token }: Props) => {
         formData.append("Year", data.year)
 
         await addProduct(formData, token)
-
+        reset()
         
     }
     
@@ -240,7 +240,7 @@ const AddProductForm = ({ classes, token }: Props) => {
             />
             
             <Button 
-                text="Add"
+                text="إضافة"
                 Icon={IoAddCircle}
                 type="submit"
                 disabled={isSubmitting}

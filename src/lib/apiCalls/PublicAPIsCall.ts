@@ -1,4 +1,4 @@
-import { AddReviewApiResponse, CountApiResponse, GetAdsApiResponse, GetMainInfoApiResponse, GetReviewsApiResponse, ProductsApiResponse, SettingsApiResponse, SingleProductApiResponse } from '@/lib/Dto'
+import { AddReviewApiResponse, CountApiResponse, GetAdsApiResponse, GetMainInfoApiResponse, GetReviewsApiResponse, ProductsApiResponse, ProductsUserApiResponse, SettingsApiResponse, SingleProductApiResponse } from '@/lib/Dto'
 import { DOMAIN } from "@/lib/constance"
 import { toast } from 'react-toastify'
 
@@ -19,10 +19,11 @@ export const fetchSettings = async () => {
 
     } catch (error) {
         console.log(error)
+        throw new Error(`${error}`)
     }
 }
 
-export async function fetchProducts(pageNumber: string | undefined) {
+export async function fetchProducts(pageNumber: string) {
     try {
         const res = await fetch(
         `${DOMAIN}/Car/ShowSixCars/${pageNumber}`, {
@@ -40,6 +41,69 @@ export async function fetchProducts(pageNumber: string | undefined) {
     } catch (error) {
         console.log(error)
         throw new Error(`خطأ في جلب المنتجات ${error}`)
+    }
+}
+
+export async function fetchProductsCount() {
+    try {
+        const res = await fetch(
+        `${DOMAIN}/Car/Count`, {
+          cache: 'no-store',
+        })
+    
+        if (!res.ok) throw new Error("خطأ في جلب عدد السيارات")
+    
+        const response = await res.json() as CountApiResponse
+    
+        if (response.errorMessage) throw new Error(`خطأ في جلب عدد المنتجات ${response.errorMessage}`)
+        
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+        throw new Error(`خطأ في جلب عدد المنتجات ${error}`)
+    }
+}
+
+export async function fetchProductsByUser(pageNumber: string, userId: string) {
+    try {
+        const res = await fetch(
+        `${DOMAIN}/Car/ShowUserCars/${pageNumber}/${userId}`, {
+          cache: 'no-store',
+        })
+    
+        if (!res.ok) throw new Error("خطأ في جلب المنتجات")
+    
+        const response = await res.json() as ProductsUserApiResponse
+    
+        if (response.errorMessage) throw new Error(`خطأ في جلب المنتجات ${response.errorMessage}`)
+
+        return { cars: response.data.cars, user: response.data.user }
+        
+    } catch (error) {
+        console.log(error)
+        throw new Error(`خطأ في جلب المنتجات ${error}`)
+    }
+}
+
+export async function fetchProductsCountByUser(userId: string) {
+    try {
+        const res = await fetch(
+        `${DOMAIN}/Car/CountUserCars/${userId}`, {
+          cache: 'no-store',
+        })
+    
+        if (!res.ok) throw new Error("خطأ في جلب عدد السيارات")
+    
+        const response = await res.json() as CountApiResponse
+    
+        if (response.errorMessage) throw new Error(`خطأ في جلب عدد المنتجات ${response.errorMessage}`)
+        
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+        throw new Error(`خطأ في جلب عدد المنتجات ${error}`)
     }
 }
 
@@ -71,27 +135,6 @@ export async function fetchSearchProducts(data: object) {
     }
 }
   
-export async function fetchProductsCount() {
-    try {
-        const res = await fetch(
-        `${DOMAIN}/Car/Count`, {
-          cache: 'no-store',
-        })
-    
-        if (!res.ok) throw new Error("خطأ في جلب عدد السيارات")
-    
-        const response = await res.json() as CountApiResponse
-    
-        if (response.errorMessage) throw new Error(`خطأ في جلب عدد المنتجات ${response.errorMessage}`)
-        
-        return response.data
-        
-    } catch (error) {
-        console.log(error)
-        throw new Error(`خطأ في جلب عدد المنتجات ${error}`)
-    }
-}
-
 export async function fetchSingleProduct(productId: string) {
     try {
         const res = await fetch(
@@ -214,6 +257,44 @@ export async function addReview(Name:string, Number:string, Content:string, Star
     }
 }
 
+export async function addPublicReview(Name:string, Number:string, Content:string, Stars:number) {
+    try {
+
+        const review = {
+            Name,
+            Number,
+            ContentMsg: Content,
+            Stars
+        }
+        const res = await fetch(
+        `${DOMAIN}/Car/AddComment`, {
+          method: 'POST',
+          body: JSON.stringify(review),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+    
+        if (!res.ok) {
+            
+            toast.error(`خطأ في إضافة التعليق ${res.status} ${res.statusText}`)
+            return
+        }
+    
+        const response = await res.json() as AddReviewApiResponse
+    
+        if (response.errorMessage) {
+            toast.error(`خطأ في إضافة التعليق ${response.errorMessage}`)
+            return
+        }
+        
+        toast.success(`تم إرسال التعليق إلى المسؤول`)
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export async function hitAd(adId: number) {
     try {
         const res = await fetch(
@@ -233,7 +314,6 @@ export async function hitAd(adId: number) {
         console.log(error)
     }
 }
-
 
 export async function fetchMainInfo() {
     try {

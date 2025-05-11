@@ -47,7 +47,7 @@ const FilterForm = ({ classes }: Props) => {
         router.push(`/product/search?${params.toString()}`)
     }
   return (
-    <div className={`${classes} w-8/10 p-7 bg-cc-white rounded-3xl shadow-type2 overflow-y-auto mx-auto`}>
+    <div className={`${classes} w-8/10 p-7 bg-cc-white rounded-3xl shadow-type2 mx-auto max-h-[550px] overflow-y-auto`}>
         <h2 className="text-large2 text-center mb-5">دعنا نجد سيارتك المفضلة</h2>
         <form onSubmit={submitHandler}
             className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-end gap-2.5">

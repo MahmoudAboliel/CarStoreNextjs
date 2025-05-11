@@ -7,27 +7,18 @@ import { IoArrowForward, IoArrowBack } from "@/lib/utils";
 import { DOMAINImage } from '@/lib/constance';
 import { useSettingsStore } from '@/stores/useSettingStore';
 
-interface Slide {
-  id: number;
-  src: string;
-  alt: string;
-  subtitle: string;
-  title: string;
-  description: string;
-}
 
 interface HeroProps {
-  slides: Slide[];
   interval?: number;
   aspectRatio?: string; // مثال: "16/9"
 }
 
 
-const Hero = ({ slides, interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
+const Hero = ({ interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
 
     const { settings } = useSettingsStore()
       
-    const slidess = [
+    const slides = [
         {
             id: 1,
             img: `${DOMAINImage}/${settings?.homeImg1}`,
@@ -49,11 +40,11 @@ const Hero = ({ slides, interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
     const [isPaused, setIsPaused] = useState(false);
 
     const nextSlide = useCallback(() => {
-        setCurrentSlide((prev) => (prev + 1) % slidess.length);
-    }, [slidess.length]);
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, [slides.length]);
 
     const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + slidess.length) % slidess.length);
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
     const goToSlide = (index: number) => {
@@ -84,7 +75,7 @@ const Hero = ({ slides, interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
             className="flex h-full transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-            {slidess.map((slide) => (
+            {slides.map((slide) => (
             <div 
                 key={slide.id} 
                 className="w-full h-full shrink-0 relative"
@@ -130,14 +121,14 @@ const Hero = ({ slides, interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
         {/* Navigation Arrows */}
         <button 
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70"
             aria-label="Previous slide"
         >
             <IoArrowBack />
         </button>
         <button 
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 group-hover:opacity-100"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70"
             aria-label="Next slide"
         >
             <IoArrowForward />

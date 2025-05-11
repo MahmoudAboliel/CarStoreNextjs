@@ -5,7 +5,7 @@ import { hitAd } from "@/lib/apiCalls/PublicAPIsCall";
 
 interface Props {
   data: Ad;
-  isLine: boolean;
+  isLine?: boolean;
 }
 
 const AdCard = ({ data: {id , name, description, startDate, endDate, imgName, url}, isLine }: Props) => {
@@ -14,7 +14,7 @@ const AdCard = ({ data: {id , name, description, startDate, endDate, imgName, ur
     await hitAd(id)
   }
   return (
-    <div className={`${isLine && 'w-full sm:min-w-[320px] min-w-[280px]'} relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg`}>
+    <div className={`${isLine && 'w-full sm:min-w-[320px] min-w-[280px]'} relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 `}>
       {/* Badges */}
       {/* <div className="absolute top-3 left-3 z-10 flex gap-2">
         {isFeatured && (
@@ -35,7 +35,7 @@ const AdCard = ({ data: {id , name, description, startDate, endDate, imgName, ur
           src={`${DOMAINImage}/${imgName}`}
           alt={name}
           fill
-          className="object-cover"
+          className="object-fill"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>

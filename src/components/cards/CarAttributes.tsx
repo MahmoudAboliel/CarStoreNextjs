@@ -1,4 +1,4 @@
-import { CAR_ATTRIBUTES } from "@/lib/utils";
+import { CAR_ATTRIBUTES } from "@/lib/constance";
 
 interface CarAttributesProps {
   attributes: Record<string, string>;
