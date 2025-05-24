@@ -24,7 +24,7 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
         redirect('/')
     
     return (
-        <main className="overflow-hidden min-h-screen p-7">
+        <main dir="rtl" className="overflow-hidden min-h-screen p-7">
             <section className="container mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-5 items-stretch">
                     <Sidebar 

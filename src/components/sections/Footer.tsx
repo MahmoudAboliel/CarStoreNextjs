@@ -7,10 +7,12 @@ import { usePathname } from "next/navigation";
 import { useSettingsStore } from "@/stores/useSettingStore";
 import AddPublicReviewForm from "../froms/AddPublicReviewForm";
 import Logo from "@/components/Logo";
+import { getCookie } from "cookies-next";
 
 
 const Footer = () => {
   const { settings, loading } = useSettingsStore()
+  const isAdmin = getCookie('isAdmin')?.toString()
 
   const pathName = usePathname();
 
@@ -62,15 +64,39 @@ const Footer = () => {
           <div>
             <Subtitle title="روابط سريعة" />
             {mainLinks.map(link => (
-              <Link 
-                className="flex items-center text-small gap-2 hover:pl-2 hover:text-cc-red transition-all duration-150"
-                href={link.href}
-                key={link.href}>
-                  <MdArrowRight 
-                    className="text-cc-red text-medium2"
-                  />
-                  {link.label}
-              </Link>))}
+              isAdmin === 'true' 
+              ? link.href !== '/user' &&
+                <Link 
+                  className="flex items-center text-small gap-2 hover:pl-2 hover:text-cc-red transition-all duration-150"
+                  href={link.href}
+                  key={link.href}>
+                    <MdArrowRight 
+                      className="text-cc-red text-medium2"
+                    />
+                    {link.label}
+                </Link>
+              : isAdmin === 'false'
+                ? link.href !== '/admin' && 
+                  <Link 
+                    className="flex items-center text-small gap-2 hover:pl-2 hover:text-cc-red transition-all duration-150"
+                    href={link.href}
+                    key={link.href}>
+                      <MdArrowRight 
+                        className="text-cc-red text-medium2"
+                      />
+                      {link.label}
+                  </Link>
+                : (link.href !== '/admin' && link.href !== '/user') && 
+                  <Link 
+                    className="flex items-center text-small gap-2 hover:pl-2 hover:text-cc-red transition-all duration-150"
+                    href={link.href}
+                    key={link.href}>
+                      <MdArrowRight 
+                        className="text-cc-red text-medium2"
+                      />
+                      {link.label}
+                  </Link>
+            ))}
           </div>
           {/* third column */}
           <div>

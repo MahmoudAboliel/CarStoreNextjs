@@ -12,7 +12,7 @@ const clientStars = [...Array(5)]
   
   return (
     // 
-    <div className="w-full  sm:min-w-[320px] min-w-[280px] bg-white p-6 rounded-3xl relative shadow-md mx-2 flex flex-col h-full">
+    <div className="w-full  sm:min-w-[320px] min-w-[280px] bg-white p-6 rounded-3xl relative shadow-type2 mx-2 flex flex-col h-full">
       {/* Quotes decoration */}
       <div className="absolute flex items-center top-0 right-0 text-9xl text-gray-100 z-0">
         <BiSolidQuoteSingleRight className="" />

@@ -29,7 +29,7 @@ const LoginForm = () => {
     
     const onSubmit = async (data: FormData) => {
         console.log('sss');
-        loginFunc(data.email, data.password, reset, router.push, router.refresh);
+        loginFunc(data.email, data.password, reset, router.push);
         console.log('eee');
     }   
 

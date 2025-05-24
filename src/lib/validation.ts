@@ -36,7 +36,7 @@ export const RegisterUserSchema = z.object({
     
     number: z
     .string({required_error: "رقم التواصل مطلوب"})
-    .regex(/^[0-9]{10}$/, "يجب إدخال أرقام"),    
+    .regex(/^[0-9]{10}$/, "يجب إدخال عشر أرقام"),    
 
     city: z
     .string({
@@ -70,7 +70,7 @@ export const EditProfileSchema = z.object({
     
     number: z
     .string({required_error: "رقم التواصل مطلوب"})
-    .regex(/^[0-9]{10}$/, "يجب إدخال أرقام"),
+    .regex(/^[0-9]{10}$/, "يجب إدخال عشر أرقام"),
 
     city: z
     .string({
@@ -127,18 +127,18 @@ export const EditSettingsSchema = z.object({
     facebook: z
     .string({
         required_error: "facebook مطلوب"
-    }).url(),
+    }).url('الرابط خاطئ'),
     instagram: z
     .string({
         required_error: "instagram مطلوب"
-    }).url(),
+    }).url('الرابط خاطئ'),
     whatsapp: z
     .string({
         required_error: "whatsapp مطلوب"
-    }).url(),
+    }).url('الرابط خاطئ'),
 
     logo: z
-    .any().optional()
+    .any()
     .refine((files) => files?.length === 1, "صورة الشعار مطلوبة")
     .refine((files) => files?.[0]?.size <= 5_000_000, "5MB الحجم الاعظمي")
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), "image/jpeg, image/jpg, image/png, image/webp"),
@@ -179,19 +179,18 @@ export const AddProductSchema = z.object({
     brand: z
     .string({
         required_error: "الماركة مطلوبة"
-    }),
+    }).min(2, 'الماركة مطلوبة'),
 
     model: z
     .string({
         required_error: "الموديل مطلوب"
-    }),
+    }).min(2, 'الموديل مطلوبة'),
 
     year: z
     .string({
         required_error: "سنة الصنع مطلوبة"
     })
-    .length(4, "فقط أربعة أرقام")
-    .regex(/[0-9]/, "يجب إدخال أرقام"),
+    .regex(/^[0-9]{4}$/, "يجب إدخال أربعة أرقام"),
 
     kilometers: z
     .string({
@@ -218,22 +217,23 @@ export const AddProductSchema = z.object({
     color: z
     .string({
         required_error: "اللون مطلوب"
-    }),
+    }).min(2, 'اللون مطلوب'),
 
     price: z
     .string({
         required_error: "السعر مطلوب"
-    }),
+    })
+    .regex(/[0-9]/, "يجب إدخال أرقام"),
 
     description: z
     .string({
         required_error: "الوصف مطلوب"
-    }),
+    }).min(3, 'الوصف مطلوب'),
 
     city: z
     .string({
         required_error: "الوصف مطلوب"
-    }),
+    }).min(3, 'المدينة مطلوبة'),
 
     img1: z
     .any()
@@ -274,10 +274,11 @@ export const AddReviewSchema = z.object({
 export const AddAdSchema = z.object({
     title: z
     .string({required_error: "العنوان مطلوب"})
-    .min(3),
+    .min(3, 'العنوان مطلوب أكثر من ثلاثة محارف'),
 
     description: z
-    .string({ required_error: "الوصف مطلوب"}),
+    .string({ required_error: "الوصف مطلوب"})
+    .min(3, 'الوصف مطلوب أكثر من ثلاثة محارف'),
 
     startDate: z
     .string({ required_error: "تاريخ البداية مطلوب"}),
@@ -286,7 +287,8 @@ export const AddAdSchema = z.object({
     .string({ required_error: "تاريخ الإنتهاء مطلوب"}),
     
     url: z
-    .string({ required_error: "الرابط مطلوب"}),
+    .string({ required_error: "الرابط مطلوب"})
+    .url('الرابط خاطئ'),
 
     img: z
     .any()

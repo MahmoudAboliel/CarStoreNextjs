@@ -1,21 +1,23 @@
 import type { NextConfig } from "next"
 
-export const myConfig = {
-  protocol: 'http',
-  IP: '192.168.1.105',
-  port: '5059'
+type Props = {
+  protocol: 'http' | 'https' | undefined,
+  hostname: string;
+  port: string;
+  pathname: string;
 }
+export const myConfig: Props = {
+  protocol: 'http',
+  hostname: 'rentacar.somee.com',
+  port: '',
+  pathname: '/Upload/**'
+};
 
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
     remotePatterns: [
-      {
-        protocol: myConfig.protocol as "http" | "https" | undefined,
-        hostname: myConfig.IP,
-        port: myConfig.port,
-        pathname: '/Upload/**'
-      }
+      myConfig
     ]
   }
 };

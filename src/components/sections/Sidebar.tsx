@@ -115,7 +115,7 @@ const Sidebar = ({ classes, role }: ProfileSidebarProps) => {
               <h3 className="text-lg text-gray-900">{profile?.phoneNumber}</h3>
           </div>
       </div>
-      <div className="space-y-3">
+      <div dir="rtl" className="space-y-3">
         { role === 'user'
           ? userLinks.map(link => (
               <Link 

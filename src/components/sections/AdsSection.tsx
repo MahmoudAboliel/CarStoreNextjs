@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useCallback } from "react";
-import AdCard from "@/components/cards/AdCard";
-import SectionHeader from "@/components/sections/SectionHeader";
-import { IoArrowForward, IoArrowBack } from "@/lib/utils";
-import { fetchAds } from "@/lib/apiCalls/PublicAPIsCall";
-import { Ad } from "@/lib/Dto"; 
-import { interval } from "@/lib/constance";
+import { useState, useEffect, useCallback } from "react"
+import AdCard from "@/components/cards/AdCard"
+import SectionHeader from "@/components/sections/SectionHeader"
+import { fetchAds } from "@/lib/apiCalls/PublicAPIsCall"
+import { Ad } from "@/lib/Dto"
+import { interval } from "@/lib/constance"
+import ArrowButton from '@/components/ArrowButton'
 
 const AdsSection = () => {
 
@@ -32,9 +32,9 @@ const AdsSection = () => {
       setCurrentIndex((prev) => (prev - 1 + ads.length) % ads.length);
   };
 
-  // const goToIndex = (index: number) => {
-  //     setCurrentIndex(index);
-  // };
+  const goToIndex = (index: number) => {
+      setCurrentIndex(index);
+  };
 
   useEffect(() => {
       // if (isPaused) return;
@@ -46,61 +46,58 @@ const AdsSection = () => {
   return (
     ads.length !== 0 &&
     <section className="relative py-5 bg-cc-bg-light shadow-type1 group">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto p-4">
         
         <SectionHeader 
             subtitle="أحدث الإعلانات"
             title="تصفح أحدث الإعلانات"
             span="في مختلف المجالات"
         />
-        {ads === null 
-          ? (<div className="flex justify-center items-center ">
-              <p className="text-3xl font-bold text-gray-800">لا يوجد إعلانات</p>
+        
+        <div className="flex gap-2 mt-20 p-2 overflow-x-auto"
+          
+        >
+          {ads.map((ad) => (
+            <div
+              className="transition-transform duration-500 ease-in-out"
+              key={ad.id}
+              style={{
+                transform: `translateX(calc(-${(currentIndex * 100)}% - ${currentIndex * 8}px))`
+              }}>
+              <AdCard 
+                isLine  
+                data={ad}
+              />
             </div>
-            ) 
-          : (
-            <>
-              <div className="flex gap-2 mt-20 py-2 overflow-hidden"
-               
-              >
-                {ads.map((ad) => (
-                  <div
-                    className="transition-transform duration-500 ease-in-out"
-                    key={ad.id}
-                    style={{
-                      transform: `translateX(calc(-${(currentIndex * 100)}% - ${currentIndex * 8}px))`
-                    }}>
-                    <AdCard 
-                      isLine  
-                      data={ad}
-                    />
-                  </div>
-                ))}
-              </div>
+          ))}
+        </div>
 
-              {/* Navigation Arrows */}
-              <button 
-                  onClick={prevIndex}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
-                  aria-label="Previous slide"
-              >
-                  <IoArrowBack />
-              </button>
-              <button 
-                  onClick={nextIndex}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70 transition opacity-0 hover:opacity-100 group-hover:opacity-100"
-                  aria-label="Next slide"
-              >
-                  <IoArrowForward />
-              </button>
-              {/* زر عرض المزيد */}
-              {/* <CustomLink 
-                label="Show more"
-                href="/ads"
-                classes="w-fit mx-auto mt-8 rounded-[9999px!important]"
-              /> */}
-            </>
-          )}
+        {/* Navigation Arrows */}
+        {
+          ads.length > 1 &&
+          <>
+            <ArrowButton func={prevIndex} position="left" />
+            <ArrowButton func={nextIndex} position="right" />
+          </>
+        }
+        {/* Navigation Dots */}
+        <div className="flex justify-center mt-8">
+          {Array.from({ length: ads.length }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToIndex(index)}
+              className={`w-3 h-3 mx-1 rounded-full ${currentIndex === index ? 'bg-red-600' : 'bg-gray-300'}`}
+              aria-label={`Go to review ${index + 1}`}
+            />
+          ))}
+        </div>
+        {/* زر عرض المزيد */}
+        {/* <CustomLink 
+          label="Show more"
+          href="/ads"
+          classes="w-fit mx-auto mt-8 rounded-[9999px!important]"
+        /> */}
+            
       </div>
     </section>
   );

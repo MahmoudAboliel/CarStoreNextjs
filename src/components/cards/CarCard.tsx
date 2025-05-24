@@ -15,7 +15,7 @@ const CarCard = ({
 }: CarCardProps & {isLine?: boolean}) => {
   // 
   return (
-    <div className={`${isLine && 'w-full min-w-[310px] sm:w-[320px]'} flex flex-col p-4 gap-3 bg-white mx-auto rounded-2xl shadow-md transition-shadow duration-300 group w-full max-w-md md:max-w-2xl`}>
+    <div className={`${isLine && 'w-full min-w-[310px] sm:w-[320px]'} flex flex-col p-4 gap-3 bg-white mx-auto rounded-2xl shadow-type2 transition-shadow duration-300 group w-full max-w-md md:max-w-2xl`}>
       {/* Image Container */}
       <div className="w-full h-48 md:h-56 lg:h-64 overflow-hidden relative rounded-xl">
         <Image

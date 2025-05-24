@@ -14,7 +14,7 @@ const AdCard = ({ data: {id , name, description, startDate, endDate, imgName, ur
     await hitAd(id)
   }
   return (
-    <div className={`${isLine && 'w-full sm:min-w-[320px] min-w-[280px]'} relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 `}>
+    <div className={`${isLine && 'w-full sm:min-w-[320px] min-w-[280px]'} relative bg-white rounded-xl shadow-type2 overflow-hidden transition-all duration-300 `}>
       {/* Badges */}
       {/* <div className="absolute top-3 left-3 z-10 flex gap-2">
         {isFeatured && (

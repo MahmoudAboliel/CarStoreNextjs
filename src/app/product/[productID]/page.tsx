@@ -42,10 +42,15 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
           <div className="lg:col-span-4 space-y-5">  
             <div className="bg-cc-white rounded-3xl p-5 md:p-7 space-y-2 shadow-type2">
               <h2 className="font-semibold text-2xl md:text-3xl">{data.car.brand}</h2>
-              <p className="flex items-center gap-2 text-base text-gray-700">
-                <IoMdTime className="text-cc-red text-xl" />
-                Listed On: <span className="text-gray-600">{new Date(data.car.createDate).toDateString()}</span>
-              </p>
+              <div className="flex items-center justify-between my-1">
+                <p className="flex items-center gap-2 text-base text-gray-700">
+                  <IoMdTime className="text-cc-red text-xl" />
+                  Listed On: <span className="text-gray-600">{new Date(data.car.createDate).toDateString()}</span>
+                </p>
+                <span className={`text-white p-2 text-xl rounded-md ${data.car.status === 'new' ? 'bg-cc-green' : 'bg-cc-red'}`}>
+                  {data.car.status === 'new' ? 'جديدة' : 'مستعملة'}
+                </span>
+              </div>
               <SingleCarImages 
                 images={carImages}
               />

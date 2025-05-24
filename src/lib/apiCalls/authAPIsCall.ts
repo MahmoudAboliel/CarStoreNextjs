@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 import { RegisterApiResponse, LoginApiResponse, ProfileInfoApiResponse } from "@/lib/Dto"
 import { setCookie } from "cookies-next"
 
-export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:string)=>void, refersh:()=>void) => {
+export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:string)=>void) => {
   try {
     const res = await fetch(
       `${DOMAIN}/Account/Register`, {
@@ -13,8 +13,10 @@ export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:
       }
     )
 
-    if (!res.ok)
+    if (!res.ok) {
+      toast.error("خطأ في إنشاء الحساب")
       throw new Error("خطأ في إنشاء الحساب")
+    }
 
     const response = await res.json() as RegisterApiResponse
 
@@ -33,7 +35,6 @@ export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:
     
     toast.success("تم إنشاء الحساب بنجاح");
     reset()
-    refersh()
     window.location.reload()
     push('/')
   
@@ -42,7 +43,7 @@ export const registerFunc = async (formData:FormData, reset:()=>void, push:(url:
   }
 }
 
-export const loginFunc = async (Email:string, Password:string, reset:()=>void, push:(url:string)=>void, refresh:()=>void) => {
+export const loginFunc = async (Email:string, Password:string, reset:()=>void, push:(url:string)=>void) => {
   
   try {
     const res = await fetch(
@@ -59,9 +60,8 @@ export const loginFunc = async (Email:string, Password:string, reset:()=>void, p
     )
     
     if (!res.ok) {
-      console.log(res.status)
-      console.log(res.statusText)
-      console.log("خطأ في تسجيل الدخول")
+      toast.error("خطأ في تسجيل الدخول")
+      throw new Error("خطأ في تسجيل الدخول")
     }
       
 
@@ -82,7 +82,6 @@ export const loginFunc = async (Email:string, Password:string, reset:()=>void, p
 
     reset()
     window.location.reload()
-    refresh()
     push('/')
     toast.success("تسجيل الدخول بنجاح")
     

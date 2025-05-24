@@ -53,7 +53,7 @@ const InputField = ({ label, id, type = "text", accept, defaultValue, register, 
                 placeholder={label}
               />}
           {type === 'password' && (
-            <button
+            <button type="button"
               className="absolute left-3 top-1/2 outline-none -translate-y-1/2 text-gray-600 text-xl"
               onClick={() => setShowPassword(!showPassword)}
             >

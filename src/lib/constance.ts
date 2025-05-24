@@ -2,10 +2,10 @@ import { BsFuelPumpFill, FaCalendar, FaRoad, GiSteeringWheel, IoCarSport, IoColo
 import { myConfig } from "../../next.config";
 
 
-export const DOMAIN = `${myConfig.protocol}://${myConfig.IP}:${myConfig.port}/api`
-export const DOMAINImage = `${myConfig.protocol}://${myConfig.IP}:${myConfig.port}/Upload`
-// export const DOMAINImage = "http://RentACar.somee.com"
-// export const DOMAIN = "http://RentACar.somee.com/api"
+export const DOMAIN = `${myConfig.protocol}://${myConfig.hostname}:${myConfig.port}/api`
+export const DOMAINImage = `${myConfig.protocol}://${myConfig.hostname}:${myConfig.port}/Upload`
+// export const DOMAINImage = "http://rentacar.somee.com/Upload"
+// export const DOMAIN = "http://rentacar.somee.com/api"
 
 export const ARTICLE_PER_PAGE = 8;
 export const interval = 3000;
@@ -18,6 +18,10 @@ export const mainLinks = [
       {
           label: 'المنتجات',
           href: '/product?pageNumber=1',
+      },
+      {
+          label: 'البحث',
+          href: '/product/search',
       },
       {
           label: 'الملف الشخصي',

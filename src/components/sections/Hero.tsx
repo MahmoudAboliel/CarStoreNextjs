@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
-import Button from '@/components/Button';
-import { IoArrowForward, IoArrowBack } from "@/lib/utils";
-import { DOMAINImage } from '@/lib/constance';
-import { useSettingsStore } from '@/stores/useSettingStore';
-
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
+// import Button from '@/components/Button'
+import { DOMAINImage } from '@/lib/constance'
+import { useSettingsStore } from '@/stores/useSettingStore'
+import ArrowButton from '@/components/ArrowButton'
 
 interface HeroProps {
   interval?: number;
@@ -97,7 +96,7 @@ const Hero = ({ interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
                         <h2 className="text-lg font-bold mb-2">
                             {slide.text}
                         </h2>
-                        <div className='flex flex-wrap gap-3 mt-5'>
+                        {/* <div className='flex flex-wrap gap-3 mt-5'>
                             <Button 
                                 text='من نحن' 
                                 Icon={IoArrowForward}
@@ -111,7 +110,7 @@ const Hero = ({ interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
                                 reverse={true}
                                 classes='text-base'
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -119,20 +118,8 @@ const Hero = ({ interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
         </div>
 
         {/* Navigation Arrows */}
-        <button 
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70"
-            aria-label="Previous slide"
-        >
-            <IoArrowBack />
-        </button>
-        <button 
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white text-2xl p-4 rounded-full hover:bg-black/70"
-            aria-label="Next slide"
-        >
-            <IoArrowForward />
-        </button>
+        <ArrowButton func={prevSlide} position='left' />
+        <ArrowButton func={nextSlide} position='right' />
 
         {/* Dots Indicator */}
         <div className="absolute bottom-[50px] left-[50px] -translate-x-1/2 flex space-x-2">
@@ -141,7 +128,7 @@ const Hero = ({ interval = 3000, aspectRatio = "16/9" }:HeroProps) => {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition ${
-                index === currentSlide ? 'bg-white' : 'bg-white/50'
+                index === currentSlide ? 'bg-cc-red' : 'bg-white/80'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
             />

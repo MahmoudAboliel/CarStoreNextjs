@@ -1,7 +1,7 @@
 import CustomLink from "@/components/CustomLink"
 import Pagination from "@/components/Pagination";
 import SectionHeader from "@/components/sections/SectionHeader"
-import { IoAdd, FaEye, FaTrashAlt, BiCommentCheck, IoStarSharp } from "@/lib/utils";
+import { IoAdd, FaEye, SiAdblock, FaTrashAlt, BiCommentCheck, IoStarSharp } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { fetchReviews, fetchReviewsCount, handleReview } from "@/lib/apiCalls/adminAPIsCall";
 import { ARTICLE_PER_PAGE } from "@/lib/constance";
@@ -25,15 +25,20 @@ const ProductsPage = async ({ searchParams }: Props) => {
     const deleted = async (formData: FormData) => {
             "use server"
             const id = parseInt(formData.get('id')?.toString() || '')
-            const res = await handleReview(token, id, 'DeclineComment')
-            console.log(`from reviews page ${res}`)
+            await handleReview(token, id, 'DeleteComment')
+            revalidatePath('/admin/reviews')
+    }
+
+    const reject = async (formData: FormData) => {
+            "use server"
+            const id = parseInt(formData.get('id')?.toString() || '')
+            await handleReview(token, id, 'DeclineComment')
             revalidatePath('/admin/reviews')
     }
     const accepted = async (formData: FormData) => {
             "use server"
             const id = parseInt(formData.get('id')?.toString() || '')
-            const res = await handleReview(token, id, 'ApproveComment')
-            console.log(`from reviews page ${res}`)
+            await handleReview(token, id, 'ApproveComment')
             revalidatePath('/admin/reviews')
     }
 
@@ -121,14 +126,20 @@ const ProductsPage = async ({ searchParams }: Props) => {
                                                 <BiCommentCheck />
                                             </button>
                                         </form>
-                                        <form action={deleted}>
+                                        <form action={reject}>
                                             <input hidden readOnly type="number" name="id" value={review.id} />
                                             <button className="cursor-pointer text-red-600 border rounded-md p-1 hover:bg-red-600/20 transition-colors duration-150">
-                                                <FaTrashAlt />
+                                                <SiAdblock />
                                             </button>
                                         </form>
                                     </>
                                 }
+                                <form action={deleted}>
+                                    <input hidden readOnly type="number" name="id" value={review.id} />
+                                    <button className="cursor-pointer text-red-600 border rounded-md p-1 hover:bg-red-600/20 transition-colors duration-150">
+                                        <FaTrashAlt />
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

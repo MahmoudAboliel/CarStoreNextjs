@@ -8,7 +8,7 @@ export function transformData(backendData: Car): CarCardProps  {
         imageUrl: `${DOMAINImage}/${backendData.img1}`, 
         brand: backendData.brand,
         price: backendData.price.toLocaleString(),
-        isNew: backendData.status === 'New' ? true : false,
+        isNew: backendData.status === 'new' ? true : false,
         attributes: {
             system: backendData.transmission,
             model: backendData.model,

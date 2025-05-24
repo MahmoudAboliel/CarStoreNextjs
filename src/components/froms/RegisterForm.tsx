@@ -49,7 +49,7 @@ const RegisterForm = () => {
       if (data.avatar?.[0])
         formData.append('File1', data.avatar[0])
       
-      registerFunc(formData, reset, router.push, router.refresh)
+      registerFunc(formData, reset, router.push)
 
   }
 

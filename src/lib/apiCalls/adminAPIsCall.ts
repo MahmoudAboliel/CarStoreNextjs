@@ -247,7 +247,7 @@ export async function fetchReviewsCount(token: string) {
     }
 }
 
-export async function handleReview(token: string, reviewId: number, type: 'ApproveComment' | 'DeclineComment') {
+export async function handleReview(token: string, reviewId: number, type: 'ApproveComment' | 'DeclineComment' | 'DeleteComment') {
     try {
         const res = await fetch(
         `${DOMAIN}/Admin/${type}/${reviewId}`, {
